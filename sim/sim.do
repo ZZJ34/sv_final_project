@@ -18,4 +18,15 @@ vsim -onfinish stop -sv_seed $SEED -assertdebug -novopt -c -sv_lib F:/questasim6
 proc external_editor {filename linenumber} { exec "F:/VS code/Microsoft VS Code/Code.exe" -g $filename:$linenumber}
 set PrefSource(altEditor) external_editor
 
+# 波形设置
+
+add wave /testbench_top/clk
+add wave /testbench_top/clk26m
+add wave /testbench_top/rst_
+add wave /testbench_top/rst26m_
+
+# 设置仿真波形时间单位
+configure wave -timelineunits ns
+update
+
 run -all
