@@ -34,8 +34,10 @@ task apb_input_mon::main_phase (uvm_phase phase);
     wait(this.vif.rst_ == 1);
     // collect a transaction
     while (1) begin
+
         @(posedge this.vif.clk)
-        if (this.vif.psel_i == 1 && this.vif.penable_i == 1) begin
+
+        if (this.vif.apb_port.psel_i == 1 && this.vif.apb_port.penable_i == 1) begin
             `uvm_info("apb_input_mon", "\nget one transaction!", UVM_LOW);
             
             apb_tr = new("apb_tr");
@@ -43,8 +45,8 @@ task apb_input_mon::main_phase (uvm_phase phase);
             apb_tr.paddr = this.vif.paddr_i;
             apb_tr.pwrite = this.vif.pwrite_i;
 
+            // display transaction info
             apb_tr.print_info();
-            
         end
     end
 endtask
