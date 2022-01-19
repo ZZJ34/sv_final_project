@@ -10,7 +10,7 @@ module testbench_top;
     logic rst_;    // reset for apb
     logic rst26m_; // reset for uart
 
-    real clk_t_26m = 38.461;    // 26Mhz 1000/26
+    real clk_t_26m = 38;    // 26Mhz 1000/26
     real clk_t_50m = 1000/50;   // 50MHz
 
     // interface
@@ -23,16 +23,16 @@ module testbench_top;
         .rst_(rst_),
         .rst26m_(rst26m_),
 
-        .paddr_i(),
-        .pwdata_i(),
-        .psel_i(),
-        .penable_i(),
-        .pwrite_i(),
-        .urxd_i(),
+        .paddr_i(apb_uart_if.paddr_i),
+        .pwdata_i(apb_uart_if.pwdata_i),
+        .psel_i(apb_uart_if.psel_i),
+        .penable_i(apb_uart_if.penable_i),
+        .pwrite_i(apb_uart_if.pwrite_i),
+        .urxd_i(apb_uart_if.urxd_i),
     
-        .prdata_o(),
-        .utxd_o(),
-        .uart_int_o()
+        .prdata_o(apb_uart_if.prdata_o),
+        .utxd_o(apb_uart_if.utxd_o),
+        .uart_int_o(apb_uart_if.uart_int_o)
     );
 
     // clk signal
@@ -55,15 +55,20 @@ module testbench_top;
     initial begin
         rst_ = 0;
         rst26m_ = 0;
-        # 200 
+        # 100
         rst_ = 1;
         rst26m_ = 1;
     end
 
     initial begin
-        $display($get_initial_random_seed);
-        $display($random);
-        $display(clk_t_26m);
+        // $display($get_initial_random_seed);
+        // $display($random);
+        run_test("env");
+    end
+
+    initial begin
+        uvm_config_db#(virtual apb_uart_interface)::set(null, "uvm_test_top.apb_drv_i", "vif", apb_uart_if);
+        uvm_config_db#(virtual apb_uart_interface)::set(null, "uvm_test_top.apb_mon_i", "vif", apb_uart_if);
     end
     
 endmodule

@@ -13,26 +13,17 @@ interface apb_uart_interface(input clk, input clk26m, input rst_, input rst26m_)
     logic        utxd_o;              // UART send data line
     logic        uart_int_o;          // UART interrupt signal.active high
 
-    clocking apb_drv @(posedge clk);
-        default input #1ps output #1ps;
+    clocking apb_port @(posedge clk);
+        default input #1ns output #1ns;
         output paddr_i, pwdata_i, psel_i, penable_i, pwrite_i;
-        input uart_int_o;
-    endclocking:apb_drv
+        input uart_int_o, prdata_o;
+    endclocking:apb_port
 
-    clocking apb_mon @(posedge clk);
-        default input #1ps output #1ps;
-        input prdata_o;
-    endclocking:apb_mon
-
-    clocking uart_drv @(posedge clk26m);
-        default input #1ps output #1ps;
+    clocking uart_port @(posedge clk26m);
+        default input #1ns output #1ns;
         output urxd_i;
-    endclocking:uart_drv
-
-    clocking uart_mon @(posedge clk26m);
-        default input #1ps output #1ps;
         input utxd_o;
-    endclocking:uart_mon
+    endclocking:uart_port
 
 endinterface //apb_uart_interface
 

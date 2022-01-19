@@ -3,3 +3,4 @@
 
 # 不忽略工程脚本
 !/sim/sim.do
+!/sim/sim_restart.do

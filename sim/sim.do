@@ -20,13 +20,28 @@ set PrefSource(altEditor) external_editor
 
 # 波形设置
 
-add wave /testbench_top/clk
-add wave /testbench_top/clk26m
-add wave /testbench_top/rst_
-add wave /testbench_top/rst26m_
+add wave -expand -group 26MHz_clk /testbench_top/clk26m
+add wave -expand -group 26MHz_clk /testbench_top/rst26m_
+add wave -expand -group system_clk /testbench_top/clk
+add wave -expand -group system_clk /testbench_top/rst_
+
+add wave -expand -group apb_bus /testbench_top/apb_uart_if/paddr_i
+add wave -expand -group apb_bus /testbench_top/apb_uart_if/pwrite_i
+add wave -expand -group apb_bus /testbench_top/apb_uart_if/psel_i
+add wave -expand -group apb_bus /testbench_top/apb_uart_if/penable_i
+add wave -expand -group apb_bus /testbench_top/apb_uart_if/pwdata_i
+add wave -expand -group apb_bus /testbench_top/apb_uart_if/prdata_o
+add wave -expand -group apb_bus /testbench_top/apb_uart_if/uart_int_o
+
+add wave -expand -group uart /testbench_top/apb_uart_if/urxd_i
+add wave -expand -group uart /testbench_top/apb_uart_if/utxd_o
+add wave -expand -group uart /testbench_top/dut_top_inst/uart_tx/tx_bpsclk  
 
 # 设置仿真波形时间单位
 configure wave -timelineunits ns
 update
+
+# 设置波形缩放
+WaveRestoreZoom {0 ns} {500 ns}
 
 run -all
