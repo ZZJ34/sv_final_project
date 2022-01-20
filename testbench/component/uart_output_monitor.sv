@@ -6,7 +6,7 @@ class uart_output_mon extends uvm_monitor;
     virtual apb_uart_interface vif;
 
     int baud_div ;   // frequency division factor. default 10'd338
-    bit check    ;   // check digit. default 0(none)
+    bit check    ;   // check bit. default 0(none)
 
     `uvm_component_utils(uart_output_mon);
 
@@ -69,7 +69,7 @@ task uart_output_mon::main_phase (uvm_phase phase);
 
         // detect falling edge
         if(~uart_data_start && uart_data_history && ~this.vif.uart_port.utxd_o) begin
-            `uvm_info("uart_output_mon", "\nuart falling edge!", UVM_LOW);
+            `uvm_info("uart_output_mon", "\n uart falling edge!", UVM_LOW);
             uart_data_start = 1;
             uart_baud_cnt = 0;
             uart_data_cnt= 0;
@@ -93,7 +93,7 @@ task uart_output_mon::main_phase (uvm_phase phase);
                 tr = new("tr");
                 tr.udata = uart_data[7:0];
                 tr.uverify = this.check ? {1'b1, uart_data[8]} : 2'b00;
-
+                `uvm_info("uart_output_mon", "\n collect one uart data", UVM_LOW);
                 tr.print_uart_info();
             end
 
@@ -106,11 +106,13 @@ function void uart_output_mon::put (transaction tr);
     // set baud
     if(tr.paddr == 32'h08) begin
         this.baud_div = tr.pdata;
+        `uvm_info("uart_output_mon", "\n set receive baud_div", UVM_LOW);
         $display(this.baud_div);
     end
     // set check
     if(tr.paddr == 32'h0c) begin
         this.check = tr.pdata[0];
+        `uvm_info("uart_output_mon", "\n set check bit", UVM_LOW);
         $display(this.check);
     end
 endfunction
