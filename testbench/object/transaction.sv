@@ -1,29 +1,29 @@
 `ifndef APB_TRANSACTION_SV
 `define APB_TRANSACTION_SV
 
-// apb -> uart
-class apb_transaction extends uvm_sequence_item;
+class transaction extends uvm_sequence_item;
 
 
     bit [31:0] pdata;       // APB data bus
     bit [31:0] paddr;       // APB address bus
     bit        pwrite;      // APB write or read signal.1:write,0:read
-    bit [31:0] udata;       // UART data bit
-    bit        uverify;     // UART verify bit
+    bit [7:0]  udata;       // UART data bit
+    bit [1:0]  uverify;     // UART verify bit
 
-    `uvm_object_utils(apb_transaction);
+    `uvm_object_utils(transaction);
 
-    extern function      new (string name = "apb_transaction");
-    extern function void print_info ();
+    extern function      new (string name = "transaction");
+    extern function void print_apb_info ();
+    extern function void print_uart_info ();
     
-endclass //apb_transaction
+endclass //transaction
 
 // new
-function apb_transaction::new (string name = "apb_transaction");
+function transaction::new (string name = "transaction");
     super.new(name);
 endfunction
 
-function void apb_transaction::print_info ();
+function void transaction::print_apb_info ();
  	string s;
     string description_s;
 
@@ -42,16 +42,27 @@ function void apb_transaction::print_info ();
     endcase
 
  	s={s,$sformatf("=======================================================\n")};
- 	s={s,$sformatf("       addr : %0h\n", this.paddr)};
+ 	s={s,$sformatf("       addr : %2h\n", this.paddr)};
     s={s,$sformatf("description : %s\n", description_s)};
     s={s,$sformatf("  direction : %s\n", this.pwrite ? "write" : "read")};
     if(this.pwrite) begin
+        s={s,$sformatf("    data(b) : %8b\n", this.pdata)};
         s={s,$sformatf("    data(d) : %0d\n", this.pdata)};
-        s={s,$sformatf("    data(h) : %0h\n", this.pdata)};
+        s={s,$sformatf("    data(h) : %2h\n", this.pdata)};
     end
 	s={s,"======================================================="};
  	$display("%s",s);
 endfunction
 
+function void transaction::print_uart_info ();
+    string s;
+    s={s,$sformatf("=======================================================\n")};
+ 	s={s,$sformatf("     data(b) : %8b\n", this.udata)};
+    s={s,$sformatf("     data(d) : %0d\n", this.udata)};
+    s={s,$sformatf("     data(h) : %2h\n", this.udata)};
+    if(this.uverify[1]) s={s,$sformatf("    uverify : %0b\n", this.uverify[0])};
+	s={s,"======================================================="};
+ 	$display("%s",s);
+endfunction
 
 `endif 

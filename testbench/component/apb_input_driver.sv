@@ -11,8 +11,8 @@ class apb_input_drv extends uvm_driver;
     extern function void build_phase (uvm_phase phase); 
     extern task          main_phase  (uvm_phase phase);
     extern task          idle_state  ();
-    extern task          setup_state (apb_transaction apb_t);
-    extern task          enable_state(apb_transaction apb_t);
+    extern task          setup_state (transaction tr);
+    extern task          enable_state(transaction tr);
 
 endclass //apb_input_drv
 
@@ -32,33 +32,39 @@ endfunction
 
 // main_phase
 task apb_input_drv::main_phase (uvm_phase phase);
-    apb_transaction apb_tr;
+    transaction tr;
     phase.raise_objection(this); //temp
 
-    apb_tr = new("apb_tr");
+    tr = new("tr");
 
     // wait reset end
     wait(this.vif.rst_ == 1);
 
-    apb_tr.pdata = 32'hac;
-    apb_tr.paddr = 32'h00;
-    apb_tr.pwrite = 1'b1;
+    tr.pdata = 32'd13;
+    tr.paddr = 32'h08;
+    tr.pwrite = 1'b1;
+    idle_state();
+    setup_state(tr);
+    enable_state(tr);
+
+    tr.pdata = 32'hac;
+    tr.paddr = 32'h00;
+    tr.pwrite = 1'b1;
+    idle_state();
+    setup_state(tr);
+    enable_state(tr);
+
+
+    tr.pdata = 32'h02;
+    tr.paddr = 32'h00;
+    tr.pwrite = 1'b1;
+    idle_state();
+    setup_state(tr);
+    enable_state(tr);
+
 
     idle_state();
-    setup_state(apb_tr);
-    enable_state(apb_tr);
-
-    apb_tr.pdata = 32'h02;
-    apb_tr.paddr = 32'h00;
-    apb_tr.pwrite = 1'b1;
-
-    idle_state();
-    setup_state(apb_tr);
-    enable_state(apb_tr);
-
-
-    idle_state();
-    #1000
+    #200000
 
     phase.drop_objection(this); //temp
 endtask 
@@ -71,18 +77,18 @@ task apb_input_drv::idle_state ();
 endtask
 
 // setup_state
-task apb_input_drv::setup_state (apb_transaction apb_t);
+task apb_input_drv::setup_state (transaction tr);
     @(posedge this.vif.clk);
     this.vif.apb_port.psel_i <= 1;
-    this.vif.apb_port.pwrite_i <= apb_t.pwrite;     // write or read
-    this.vif.apb_port.paddr_i <= apb_t.paddr;       // addr
+    this.vif.apb_port.pwrite_i <= tr.pwrite;     // write or read
+    this.vif.apb_port.paddr_i <= tr.paddr;       // addr
 endtask
 
 // enable_state
-task apb_input_drv::enable_state (apb_transaction apb_t);
+task apb_input_drv::enable_state (transaction tr);
     @(posedge this.vif.clk)
-    this.vif.apb_port.penable_i <= 1;                                         // enable
-    this.vif.apb_port.pwdata_i <= apb_t.pwrite ? apb_t.pdata : 32'h0000_0000; // write data
+    this.vif.apb_port.penable_i <= 1;                                   // enable
+    this.vif.apb_port.pwdata_i <= tr.pwrite ? tr.pdata : 32'h0000_0000; // write data
 endtask
 
 `endif
