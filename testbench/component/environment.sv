@@ -3,8 +3,8 @@
 
 class env extends uvm_env;
 
-    apb_input_drv apb_drv_i;
-    apb_input_mon apb_mon_i;
+    input_agt  agt_i;
+    output_agt agt_o;
 
     uart_output_mon uart_mon_o;
 
@@ -25,18 +25,16 @@ endfunction
 // build_phase
 function void env::build_phase (uvm_phase phase);
     super.build_phase(phase);
-    // instance apb_input_drv
-    apb_drv_i = apb_input_drv::type_id::create("apb_drv_i", this);
-    // instance apb_input_mon
-    apb_mon_i = apb_input_mon::type_id::create("apb_mon_i", this);
-    // instance uart_output_mon
-    uart_mon_o = uart_output_mon::type_id::create("uart_mon_o", this);
+    // instance agt_i
+    agt_i = input_agt::type_id::create("agt_i", this);
+    // instance agt_i
+    agt_o = output_agt::type_id::create("agt_o", this);
 endfunction
 
 // connect_phase
 function void env::connect_phase (uvm_phase phase);
     super.connect_phase(phase);
     // apb_input_mon -> uart_output_mon
-    apb_mon_i.apb_mon_i_port.connect(uart_mon_o.uart_mon_o_export);
+    agt_i.apb_mon_i.apb_mon_i_port.connect(agt_o.uart_mon_o.uart_mon_o_export);
 endfunction
 `endif
