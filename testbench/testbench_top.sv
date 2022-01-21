@@ -71,6 +71,7 @@ module testbench_top;
         uvm_config_db#(virtual apb_uart_interface)::set(null, "uvm_test_top.agt_i.apb_mon_i", "vif", apb_uart_if);
 
         uvm_config_db#(virtual apb_uart_interface)::set(null, "uvm_test_top.agt_o.uart_mon_o", "vif", apb_uart_if);
+        uvm_config_db#(virtual apb_uart_interface)::set(null, "uvm_test_top.agt_o.apb_mon_o", "vif", apb_uart_if);
     end
     
 endmodule

@@ -4,6 +4,7 @@
 class output_agt extends uvm_agent;
 
     uart_output_mon uart_mon_o;
+    apb_output_mon  apb_mon_o;
 
     `uvm_component_utils(output_agt);
 
@@ -23,6 +24,8 @@ function void output_agt::build_phase(uvm_phase phase);
     super.build_phase(phase);
     // instance uart_output_mon
     uart_mon_o = uart_output_mon::type_id::create("uart_mon_o", this);
+    // instance apb_output_mon
+    apb_mon_o = apb_output_mon::type_id::create("apb_mon_o", this);
 endfunction
 
 // connect_phase

@@ -23,6 +23,7 @@ function transaction::new (string name = "transaction");
     super.new(name);
 endfunction
 
+// print_apb_info
 function void transaction::print_apb_info ();
  	string s;
     string description_s;
@@ -54,6 +55,7 @@ function void transaction::print_apb_info ();
  	$display("%s",s);
 endfunction
 
+// print_uart_info
 function void transaction::print_uart_info ();
     string s;
     s={s,$sformatf("=======================================================\n")};

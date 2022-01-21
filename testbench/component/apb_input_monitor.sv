@@ -62,7 +62,6 @@ task apb_input_mon::main_phase (uvm_phase phase);
             // to model
             apb_mon_i2mdl_port.write(tr);
 
-
             // to uart_output_mon
             // set baud & set check
             if(tr.pwrite == 1 && (tr.paddr == 32'h08 || tr.paddr == 32'h0c)) uart_set_port.write(tr);

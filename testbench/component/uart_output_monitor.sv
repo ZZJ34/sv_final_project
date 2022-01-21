@@ -50,6 +50,7 @@ task uart_output_mon::main_phase (uvm_phase phase);
     int uart_baud_cnt = 0;
 
     bit[8:0] uart_data;
+
     // wait reset end
     wait(this.vif.rst26m_ == 1);
     // collect one uart data
@@ -87,6 +88,8 @@ task uart_output_mon::main_phase (uvm_phase phase);
 
                 `uvm_info("uart_output_mon", "\n collect one uart data", UVM_LOW);
                 tr.print_uart_info();
+
+                // to scoreborad
             end
 
         end

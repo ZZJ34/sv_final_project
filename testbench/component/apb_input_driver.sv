@@ -62,6 +62,12 @@ task apb_input_drv::main_phase (uvm_phase phase);
     setup_state(tr);
     enable_state(tr);
 
+    tr.paddr = 32'h18;
+    tr.pwrite = 1'b0;
+    idle_state();
+    setup_state(tr);
+    enable_state(tr);
+
 
     idle_state();
     #200000
