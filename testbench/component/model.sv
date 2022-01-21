@@ -12,6 +12,10 @@ class model extends uvm_component;
     // input_agt -> model
     uvm_blocking_get_port#(transaction) agt_i2mdl_get_port;
 
+    // model -> scoreboard
+    uvm_analysis_port#(transaction) conf_tr_port;
+    uvm_analysis_port#(transaction) uart_tr_port;
+
     extern function      new         (string name = "model", uvm_component parent = null);
     extern function void build_phase (uvm_phase phase);
     extern task          main_phase  (uvm_phase phase);
@@ -30,6 +34,10 @@ function void model::build_phase(uvm_phase phase);
     super.build_phase(phase);
     // instance agt_i2mdl_get_port
     agt_i2mdl_get_port = new("agt_i2mdl_get_port", this);
+    // instance conf_tr_port
+    conf_tr_port = new("conf_tr_port", this);
+    // instance uart_tr_port
+    uart_tr_port = new("uart_tr_port", this);
 endfunction
 
 // main_phase
@@ -77,11 +85,10 @@ task model::main_phase(uvm_phase phase);
         end
 
         // send transaction to scb
-
-        // 数据发送给scb
-        // 考虑到寄存器读写和uart数据发送的时间跨度相差甚远
-        // 将这两种 transaction 分别发送到不同的fifo
-
+        if(tr.paddr == 32'h00)
+            uart_tr_port.write(tr);
+        else
+            conf_tr_port.write(tr);
 
     end
 endtask

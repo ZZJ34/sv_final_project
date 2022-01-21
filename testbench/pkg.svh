@@ -12,4 +12,5 @@ import uvm_pkg::*;
 `include "./component/input_agent.sv"
 `include "./component/output_agent.sv"
 `include "./component/model.sv"
+`include "./component/scoreboard.sv"
 `include "./component/environment.sv"
