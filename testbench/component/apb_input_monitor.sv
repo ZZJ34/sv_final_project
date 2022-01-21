@@ -52,9 +52,10 @@ task apb_input_mon::main_phase (uvm_phase phase);
             // `uvm_info("apb_input_mon", "\nget one transaction!", UVM_LOW);
             
             tr = new("tr");
-            tr.pdata = this.vif.pwdata_i;
-            tr.paddr = this.vif.paddr_i;
+
             tr.pwrite = this.vif.pwrite_i;
+            tr.paddr = this.vif.paddr_i;
+            tr.pdata = this.vif.pwrite_i ? this.vif.pwdata_i : this.vif.apb_port.prdata_o;
 
             // display transaction info
             // tr.print_apb_info();
