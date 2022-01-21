@@ -65,7 +65,7 @@ task apb_input_mon::main_phase (uvm_phase phase);
 
             // to uart_output_mon
             // set baud & set check
-            if(tr.paddr == 32'h08 || tr.paddr == 32'h0c) uart_set_port.write(tr);
+            if(tr.pwrite == 1 && (tr.paddr == 32'h08 || tr.paddr == 32'h0c)) uart_set_port.write(tr);
         end
     end
 endtask

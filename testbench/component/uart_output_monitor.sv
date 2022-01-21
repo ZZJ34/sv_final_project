@@ -67,7 +67,7 @@ task uart_output_mon::main_phase (uvm_phase phase);
         
         uart_data_history = this.vif.uart_port.utxd_o;
 
-        // valid data
+        // data
         if(uart_data_start) begin
             uart_baud_cnt = uart_baud_cnt  > ((this.baud_div + 1) << 4) - 1 ? 0 : uart_baud_cnt + 1;
 
@@ -80,9 +80,11 @@ task uart_output_mon::main_phase (uvm_phase phase);
                 
             if(uart_data_cnt == (9 + this.check)) begin
                 uart_data_start = 0;
+
                 tr = new("tr");
                 tr.udata = uart_data[7:0];
                 tr.uverify = this.check ? {1'b1, uart_data[8]} : 2'b00;
+
                 `uvm_info("uart_output_mon", "\n collect one uart data", UVM_LOW);
                 tr.print_uart_info();
             end
