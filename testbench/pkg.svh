@@ -11,4 +11,5 @@ import uvm_pkg::*;
 `include "./component/uart_output_monitor.sv"
 `include "./component/input_agent.sv"
 `include "./component/output_agent.sv"
+`include "./component/model.sv"
 `include "./component/environment.sv"

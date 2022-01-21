@@ -8,6 +8,9 @@ class input_agt extends uvm_agent;
 
     `uvm_component_utils(input_agt);
 
+    // input_agt -> model : pointer
+    uvm_analysis_port#(transaction) agt_i2mdl_port;
+
     extern function      new           (string name = "input_agt", uvm_component parent = null);
     extern function void build_phase   (uvm_phase phase);
     extern function void connect_phase (uvm_phase phase);
@@ -31,6 +34,7 @@ endfunction
 // connect_phase
 function void input_agt::connect_phase(uvm_phase phase);
     super.connect_phase(phase);
+    agt_i2mdl_port = apb_mon_i.apb_mon_i2mdl_port;
 endfunction
 
 `endif

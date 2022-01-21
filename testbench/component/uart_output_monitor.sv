@@ -11,14 +11,12 @@ class uart_output_mon extends uvm_monitor;
     `uvm_component_utils(uart_output_mon);
 
     // apb_input_mon -> uart_output_mon
-    uvm_blocking_put_export#(transaction) uart_mon_o_export;
-    uvm_blocking_put_imp#(transaction, uart_output_mon) uart_mon_o_imp;
+    uvm_analysis_imp#(transaction, uart_output_mon) uart_tx_set_imp;
 
     extern function      new           (string name = "uart_output_mon", uvm_component parent = null);
     extern function void build_phase   (uvm_phase phase); 
-    extern function void connect_phase (uvm_phase phase); 
     extern task          main_phase    (uvm_phase phase);
-    extern function void put           (transaction tr);
+    extern function void write         (transaction tr);
 
 endclass //uart_output_mon
 
@@ -38,16 +36,8 @@ function void uart_output_mon::build_phase (uvm_phase phase);
     if(!uvm_config_db#(virtual apb_uart_interface)::get(this, "", "vif", vif)) begin
         `uvm_fatal("uart_output_mon", "virtual interface must be set for vif!!!");
     end
-    // initialize export
-    uart_mon_o_export = new("uart_mon_o_export", this);
     // initialize imp
-    uart_mon_o_imp = new("uart_mon_o_imp", this);
-endfunction
-
-// connect_phase
-function  void uart_output_mon::connect_phase (uvm_phase phase);
-    super.connect_phase(phase);
-    uart_mon_o_export.connect(uart_mon_o_imp);
+    uart_tx_set_imp = new("uart_tx_set_imp", this);
 endfunction
 
 // main_phase
@@ -101,8 +91,8 @@ task uart_output_mon::main_phase (uvm_phase phase);
     end
 endtask
 
-// put
-function void uart_output_mon::put (transaction tr);
+// write
+function void uart_output_mon::write (transaction tr);
     // set baud
     if(tr.paddr == 32'h08) begin
         this.baud_div = tr.pdata;

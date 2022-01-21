@@ -6,7 +6,11 @@ class env extends uvm_env;
     input_agt  agt_i;
     output_agt agt_o;
 
-    uart_output_mon uart_mon_o;
+    model  mdl;
+
+    // fifo
+    uvm_tlm_analysis_fifo#(transaction) agt_i2mdl_fifo;
+
 
     `uvm_component_utils(env);
 
@@ -29,12 +33,20 @@ function void env::build_phase (uvm_phase phase);
     agt_i = input_agt::type_id::create("agt_i", this);
     // instance agt_i
     agt_o = output_agt::type_id::create("agt_o", this);
+    // instance mdl
+    mdl = model::type_id::create("mdl", this);
+
+    // instance fifo
+    agt_i2mdl_fifo = new("agt_i2mdl_fifo", this);
 endfunction
 
 // connect_phase
 function void env::connect_phase (uvm_phase phase);
     super.connect_phase(phase);
     // apb_input_mon -> uart_output_mon
-    agt_i.apb_mon_i.apb_mon_i_port.connect(agt_o.uart_mon_o.uart_mon_o_export);
+    agt_i.apb_mon_i.uart_set_port.connect(agt_o.uart_mon_o.uart_tx_set_imp);
+    // input_agt -> model
+    agt_i.agt_i2mdl_port.connect(agt_i2mdl_fifo.analysis_export);
+    mdl.agt_i2mdl_get_port.connect(agt_i2mdl_fifo.blocking_get_export);
 endfunction
 `endif

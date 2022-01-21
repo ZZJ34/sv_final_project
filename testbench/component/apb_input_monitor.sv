@@ -8,7 +8,10 @@ class apb_input_mon extends uvm_monitor;
     `uvm_component_utils(apb_input_mon);
     
     // apb_input_mon -> uart_output_mon 
-    uvm_blocking_put_port#(transaction) apb_mon_i_port;
+    uvm_analysis_port#(transaction) uart_set_port;
+    
+    // apb_input_mon -> model
+    uvm_analysis_port#(transaction) apb_mon_i2mdl_port;
 
     extern function      new         (string name = "apb_input_mon", uvm_component parent = null);
     extern function void build_phase (uvm_phase phase); 
@@ -29,7 +32,9 @@ function void apb_input_mon::build_phase (uvm_phase phase);
         `uvm_fatal("apb_input_mon", "virtual interface must be set for vif!!!");
     end
     // initialize apb_mon_i_port
-    apb_mon_i_port = new("apb_mon_i_port", this);
+    uart_set_port = new("uart_set_port", this);
+    // initialize apb_mon_i2mdl_port
+    apb_mon_i2mdl_port = new("apb_mon_i2mdl_port", this);
 endfunction
 
 // main_task
@@ -44,7 +49,7 @@ task apb_input_mon::main_phase (uvm_phase phase);
 
         if (this.vif.psel_i == 1 && this.vif.penable_i == 1) begin
 
-            `uvm_info("apb_input_mon", "\nget one transaction!", UVM_LOW);
+            // `uvm_info("apb_input_mon", "\nget one transaction!", UVM_LOW);
             
             tr = new("tr");
             tr.pdata = this.vif.pwdata_i;
@@ -52,13 +57,15 @@ task apb_input_mon::main_phase (uvm_phase phase);
             tr.pwrite = this.vif.pwrite_i;
 
             // display transaction info
-            tr.print_apb_info();
+            // tr.print_apb_info();
 
-            // set baud
-            if(tr.paddr == 32'h08) apb_mon_i_port.put(tr);
+            // to model
+            apb_mon_i2mdl_port.write(tr);
 
-            // set check
-            if(tr.paddr == 32'h0c) apb_mon_i_port.put(tr);
+
+            // to uart_output_mon
+            // set baud & set check
+            if(tr.paddr == 32'h08 || tr.paddr == 32'h0c) uart_set_port.write(tr);
         end
     end
 endtask
