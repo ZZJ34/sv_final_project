@@ -3,6 +3,8 @@
 
 class scoreboard extends uvm_scoreboard;
 
+    transaction conf_tr_expect_queue[$];
+    transaction uart_tr_expect_queue[$];
     
     `uvm_component_utils(scoreboard);
 
@@ -32,7 +34,19 @@ endfunction
 
 // main_phase
 task scoreboard::main_phase(uvm_phase phase);
+    transaction expect_conf_tr, expect_uart_tr;
+    super.main_phase(phase);
+    fork
+        while(1) begin
+            conf_tr_get_port.get(expect_conf_tr);
+            conf_tr_expect_queue.push_back(expect_conf_tr);
+        end
 
+        while(1) begin
+            uart_tr_get_port.get(expect_uart_tr);
+            uart_tr_expect_queue.push_back(expect_uart_tr);
+        end
+    join
 endtask
 
 `endif

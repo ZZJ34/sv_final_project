@@ -65,8 +65,9 @@ task model::main_phase(uvm_phase phase);
 
         // calculate parity
         if(tr.pwrite == 1 && tr.paddr == 32'h00) begin
+            // udata
             tr.udata = tr.pdata;
-
+            // uverify
             if(this.check == 0) 
                 tr.uverify = 2'b00;
             else begin
@@ -82,6 +83,7 @@ task model::main_phase(uvm_phase phase);
                     tr.uverify = this.parity == 0 ? 2'b11 : 2'b10;
 
             end
+        
         end
 
         // send transaction to scb
