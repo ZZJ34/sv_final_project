@@ -49,16 +49,16 @@ task apb_input_mon::main_phase (uvm_phase phase);
 
         if (this.vif.psel_i == 1 && this.vif.penable_i == 1) begin
 
-            // `uvm_info("apb_input_mon", "\nget one transaction!", UVM_LOW);
+            `uvm_info("apb_input_mon", "\nget one transaction!", UVM_LOW);
             
             tr = new("tr");
 
             tr.pwrite = this.vif.pwrite_i;
             tr.paddr = this.vif.paddr_i;
-            tr.pdata = this.vif.pwrite_i ? this.vif.pwdata_i : this.vif.apb_port.prdata_o;
+            tr.pdata = this.vif.pwrite_i ? this.vif.pwdata_i : this.vif.prdata_o;
 
             // display transaction info
-            // tr.print_apb_info();
+            tr.print_apb_info();
 
             // to model
             apb_mon_i2mdl_port.write(tr);

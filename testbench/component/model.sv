@@ -45,9 +45,9 @@ task model::main_phase(uvm_phase phase);
         // receive transaction from agt_i
         agt_i2mdl_get_port.get(tr);
 
-        `uvm_info("model", "\nget one transaction!", UVM_LOW);
+        // `uvm_info("model", "\nget one transaction!", UVM_LOW);
 
-        tr.print_apb_info();
+        // tr.print_apb_info();
 
         // record check and parity
         if(tr.pwrite == 1 && tr.paddr == 32'h0c) begin

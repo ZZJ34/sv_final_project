@@ -46,11 +46,9 @@ function void transaction::print_apb_info ();
  	s={s,$sformatf("       addr : %2h\n", this.paddr)};
     s={s,$sformatf("description : %s\n", description_s)};
     s={s,$sformatf("  direction : %s\n", this.pwrite ? "write" : "read")};
-    if(this.pwrite) begin
-        s={s,$sformatf("    data(b) : %8b\n", this.pdata)};
-        s={s,$sformatf("    data(d) : %0d\n", this.pdata)};
-        s={s,$sformatf("    data(h) : %2h\n", this.pdata)};
-    end
+    s={s,$sformatf("    data(b) : %8b\n", this.pdata)};
+    s={s,$sformatf("    data(d) : %0d\n", this.pdata)};
+    s={s,$sformatf("    data(h) : %2h\n", this.pdata)};
 	s={s,"======================================================="};
  	$display("%s",s);
 endfunction
