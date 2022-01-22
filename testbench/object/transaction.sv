@@ -11,8 +11,8 @@ class transaction extends uvm_sequence_item;
 
     rand bit [31:0] pdata;       // APB data bus
     rand bit [31:0] paddr;       // APB address bus
-    bit [7:0]  udata;       // UART data bit
-    bit [1:0]  uverify;     // UART verify bit
+    bit [7:0]  udata;            // UART data bit
+    bit [1:0]  uverify;          // UART verify bit
 
     `uvm_object_utils_begin(transaction);
         `uvm_field_enum(trans_type, ttype, UVM_ALL_ON | UVM_NOCOMPARE)
@@ -35,6 +35,7 @@ function transaction::new (string name = "transaction");
     super.new(name);
 endfunction
 
+// post_randomize
 function void transaction::post_randomize ();
 endfunction
 
