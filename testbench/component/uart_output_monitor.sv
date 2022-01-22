@@ -13,6 +13,9 @@ class uart_output_mon extends uvm_monitor;
     // apb_input_mon -> uart_output_mon
     uvm_analysis_imp#(transaction, uart_output_mon) uart_tx_set_imp;
 
+    // uart_output_mon -> scoreboard
+    uvm_analysis_port#(transaction) uart_mon_o2scb_port;
+
     extern function      new           (string name = "uart_output_mon", uvm_component parent = null);
     extern function void build_phase   (uvm_phase phase); 
     extern task          main_phase    (uvm_phase phase);
@@ -38,6 +41,9 @@ function void uart_output_mon::build_phase (uvm_phase phase);
     end
     // initialize imp
     uart_tx_set_imp = new("uart_tx_set_imp", this);
+
+    // initialize uart_mon_o2scb_port
+    uart_mon_o2scb_port = new("uart_mon_o2scb_port", this);
 endfunction
 
 // main_phase
@@ -90,6 +96,7 @@ task uart_output_mon::main_phase (uvm_phase phase);
                 tr.print_uart_info();
 
                 // to scoreborad
+                uart_mon_o2scb_port.write(tr);
             end
 
         end

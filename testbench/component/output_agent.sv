@@ -7,6 +7,9 @@ class output_agt extends uvm_agent;
 
     `uvm_component_utils(output_agt);
 
+    // output_agt -> model : pointer
+    uvm_analysis_port#(transaction) agt_o2mdl_port;
+
     extern function      new           (string name = "output_agt", uvm_component parent = null);
     extern function void build_phase   (uvm_phase phase);
     extern function void connect_phase (uvm_phase phase);
@@ -28,6 +31,7 @@ endfunction
 // connect_phase
 function void output_agt::connect_phase(uvm_phase phase);
     super.connect_phase(phase);
+    agt_o2mdl_port = uart_mon_o.uart_mon_o2scb_port;
 endfunction
 
 `endif
