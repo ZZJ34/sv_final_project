@@ -40,16 +40,19 @@ task apb_input_drv::main_phase (uvm_phase phase);
     // wait reset end
     wait(this.vif.rst_ == 1);
 
-    tr.pdata = 32'd13;
-    tr.paddr = 32'h08;
-    tr.pwrite = 1'b1;
+    tr.pdata = 32'hac;
+    tr.paddr = 32'h00;
+    tr.ttype = transaction::WRITE;
     idle_state();
     setup_state(tr);
     enable_state(tr);
+    idle_state();
 
-    tr.pdata = 32'hac;
-    tr.paddr = 32'h00;
-    tr.pwrite = 1'b1;
+    #2038866
+
+    tr.pdata = 32'd13;
+    tr.paddr = 32'h08;
+    tr.ttype = transaction::WRITE;
     idle_state();
     setup_state(tr);
     enable_state(tr);
@@ -57,20 +60,21 @@ task apb_input_drv::main_phase (uvm_phase phase);
 
     tr.pdata = 32'h02;
     tr.paddr = 32'h00;
-    tr.pwrite = 1'b1;
+    tr.ttype = transaction::WRITE;
     idle_state();
     setup_state(tr);
     enable_state(tr);
+
 
     tr.paddr = 32'h18;
-    tr.pwrite = 1'b0;
+    tr.ttype = transaction::READ;
     idle_state();
     setup_state(tr);
     enable_state(tr);
 
 
     idle_state();
-    #200000
+    #8000000
 
     phase.drop_objection(this); //temp
 endtask 
@@ -84,17 +88,21 @@ endtask
 
 // setup_state
 task apb_input_drv::setup_state (transaction tr);
-    @(posedge this.vif.clk);
-    this.vif.apb_port.psel_i <= 1;
-    this.vif.apb_port.pwrite_i <= tr.pwrite;     // write or read
-    this.vif.apb_port.paddr_i <= tr.paddr;       // addr
+    if(tr.ttype != 2) begin
+        @(posedge this.vif.clk);
+        this.vif.apb_port.psel_i <= 1;
+        this.vif.apb_port.pwrite_i <= tr.ttype;     // write or read
+        this.vif.apb_port.paddr_i <= tr.paddr;      // addr
+    end
 endtask
 
 // enable_state
 task apb_input_drv::enable_state (transaction tr);
-    @(posedge this.vif.clk)
-    this.vif.apb_port.penable_i <= 1;                                   // enable
-    this.vif.apb_port.pwdata_i <= tr.pwrite ? tr.pdata : 32'h0000_0000; // write data
+    if(tr.ttype != 2) begin
+        @(posedge this.vif.clk)
+        this.vif.apb_port.penable_i <= 1;                                   // enable
+        this.vif.apb_port.pwdata_i <= tr.ttype ? tr.pdata : 32'h0000_0000;  // write data
+    end
 endtask
 
 `endif

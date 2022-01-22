@@ -53,7 +53,7 @@ task apb_input_mon::main_phase (uvm_phase phase);
             
             tr = new("tr");
 
-            tr.pwrite = this.vif.pwrite_i;
+            tr.ttype = this.vif.pwrite_i ? transaction::WRITE : transaction::READ;
             tr.paddr = this.vif.paddr_i;
             tr.pdata = this.vif.pwrite_i ? this.vif.pwdata_i : this.vif.prdata_o;
 
@@ -65,7 +65,7 @@ task apb_input_mon::main_phase (uvm_phase phase);
 
             // to uart_output_mon
             // set baud & set check
-            if(tr.pwrite == 1 && (tr.paddr == 32'h08 || tr.paddr == 32'h0c)) uart_set_port.write(tr);
+            if(tr.ttype == 1 && (tr.paddr == 32'h08 || tr.paddr == 32'h0c)) uart_set_port.write(tr);
         end
     end
 endtask

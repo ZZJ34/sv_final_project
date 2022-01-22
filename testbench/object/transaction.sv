@@ -3,19 +3,30 @@
 
 class transaction extends uvm_sequence_item;
 
+    // APB write or read signal.1:write,0:read 
+    typedef enum{READ=0, WRITE=1, IDLE=2}  trans_type;
 
-    bit [31:0] pdata;       // APB data bus
-    bit [31:0] paddr;       // APB address bus
-    bit        pwrite;      // APB write or read signal.1:write,0:read
+    
+	rand trans_type ttype;       // transaction type
+
+    rand bit [31:0] pdata;       // APB data bus
+    rand bit [31:0] paddr;       // APB address bus
     bit [7:0]  udata;       // UART data bit
     bit [1:0]  uverify;     // UART verify bit
 
-    `uvm_object_utils(transaction);
+    `uvm_object_utils_begin(transaction);
+        `uvm_field_enum(trans_type, ttype, UVM_ALL_ON | UVM_NOCOMPARE)
+        `uvm_field_sarray_int(pdata, UVM_ALL_ON | UVM_NOCOMPARE)
+        `uvm_field_sarray_int(paddr, UVM_ALL_ON | UVM_NOCOMPARE)
+        `uvm_field_sarray_int(udata, UVM_ALL_ON)
+        `uvm_field_sarray_int(uverify, UVM_ALL_ON)
+    `uvm_object_utils_end
+
 
     extern function      new (string name = "transaction");
+    extern function void post_randomize ();
     extern function void print_apb_info ();
     extern function void print_uart_info ();
-    extern function bit  compare(transaction tr);
     
 endclass //transaction
 
@@ -24,9 +35,7 @@ function transaction::new (string name = "transaction");
     super.new(name);
 endfunction
 
-// compare
-function bit transaction::compare (transaction tr);
-    return this.udata == tr.udata && this.uverify == tr.uverify;
+function void transaction::post_randomize ();
 endfunction
 
 // print_apb_info
@@ -49,12 +58,17 @@ function void transaction::print_apb_info ();
     endcase
 
  	s={s,$sformatf("=======================================================\n")};
- 	s={s,$sformatf("       addr : %2h\n", this.paddr)};
-    s={s,$sformatf("description : %s\n", description_s)};
-    s={s,$sformatf("  direction : %s\n", this.pwrite ? "write" : "read")};
-    s={s,$sformatf("    data(b) : %8b\n", this.pdata)};
-    s={s,$sformatf("    data(d) : %0d\n", this.pdata)};
-    s={s,$sformatf("    data(h) : %2h\n", this.pdata)};
+    if (this.ttype != 2) begin
+        s={s,$sformatf("       addr : %2h\n", this.paddr)};
+        s={s,$sformatf("description : %s\n", description_s)};
+        s={s,$sformatf("  direction : %s\n", this.ttype ? "write" : "read")};
+        s={s,$sformatf("    data(b) : %8b\n", this.pdata)};
+        s={s,$sformatf("    data(d) : %0d\n", this.pdata)};
+        s={s,$sformatf("    data(h) : %2h\n", this.pdata)};
+    end
+    else begin
+        s={s,$sformatf("%s", "do nothing")};
+    end
 	s={s,"======================================================="};
  	$display("%s",s);
 endfunction

@@ -58,13 +58,13 @@ task model::main_phase(uvm_phase phase);
         // tr.print_apb_info();
 
         // record check and parity
-        if(tr.pwrite == 1 && tr.paddr == 32'h0c) begin
+        if(tr.ttype == 1 && tr.paddr == 32'h0c) begin
             this.check = tr.pdata[0];
             this.parity = tr.pdata[1];
         end
 
         // calculate parity
-        if(tr.pwrite == 1 && tr.paddr == 32'h00) begin
+        if(tr.ttype == 1 && tr.paddr == 32'h00) begin
             // udata
             tr.udata = tr.pdata;
             // uverify
