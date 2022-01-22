@@ -5,6 +5,7 @@ class input_agt extends uvm_agent;
 
     apb_input_drv apb_drv_i;
     apb_input_mon apb_mon_i;
+    sequencer     sqr;
 
     `uvm_component_utils(input_agt)
 
@@ -25,10 +26,12 @@ endfunction
 // build_phase
 function void input_agt::build_phase(uvm_phase phase);
     super.build_phase(phase);
-    // instance apb_input_drv
+    // instance a apb_input_drv
     apb_drv_i = apb_input_drv::type_id::create("apb_drv_i", this);
-    // instance apb_input_mon
+    // instance a apb_input_mon
     apb_mon_i = apb_input_mon::type_id::create("apb_mon_i", this);
+    // instance a sequencer
+    sqr = sequencer::type_id::create("sqr", this);
 endfunction
 
 // connect_phase

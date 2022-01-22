@@ -9,6 +9,7 @@ import uvm_pkg::*;
 `include "./component/apb_input_driver.sv"
 `include "./component/apb_input_monitor.sv"
 `include "./component/uart_output_monitor.sv"
+`include "./component/sequencer.sv"
 `include "./component/input_agent.sv"
 `include "./component/output_agent.sv"
 `include "./component/model.sv"

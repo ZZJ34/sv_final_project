@@ -1,7 +1,7 @@
 `ifndef APB_INPUT_DRIVER_SV
 `define APB_INPUT_DRIVER_SV
 
-class apb_input_drv extends uvm_driver;
+class apb_input_drv extends uvm_driver #(transaction);
 
     virtual apb_uart_interface vif; 
 
@@ -32,45 +32,45 @@ endfunction
 
 // main_phase
 task apb_input_drv::main_phase (uvm_phase phase);
-    transaction tr;
     phase.raise_objection(this); //temp
 
-    tr = new("tr");
+    // instance a transaction
+    req = new("tr");
 
     // wait reset end
     wait(this.vif.rst_ == 1);
 
-    tr.pdata = 32'hac;
-    tr.paddr = 32'h00;
-    tr.ttype = transaction::WRITE;
+    req.pdata = 32'hac;
+    req.paddr = 32'h00;
+    req.ttype = transaction::WRITE;
     idle_state();
-    setup_state(tr);
-    enable_state(tr);
+    setup_state(req);
+    enable_state(req);
     idle_state();
 
     #2038866
 
-    tr.pdata = 32'd13;
-    tr.paddr = 32'h08;
-    tr.ttype = transaction::WRITE;
+    req.pdata = 32'd13;
+    req.paddr = 32'h08;
+    req.ttype = transaction::WRITE;
     idle_state();
-    setup_state(tr);
-    enable_state(tr);
+    setup_state(req);
+    enable_state(req);
 
 
-    tr.pdata = 32'h02;
-    tr.paddr = 32'h00;
-    tr.ttype = transaction::WRITE;
+    req.pdata = 32'h02;
+    req.paddr = 32'h00;
+    req.ttype = transaction::WRITE;
     idle_state();
-    setup_state(tr);
-    enable_state(tr);
+    setup_state(req);
+    enable_state(req);
 
 
-    tr.paddr = 32'h18;
-    tr.ttype = transaction::READ;
+    req.paddr = 32'h18;
+    req.ttype = transaction::READ;
     idle_state();
-    setup_state(tr);
-    enable_state(tr);
+    setup_state(req);
+    enable_state(req);
 
 
     idle_state();
