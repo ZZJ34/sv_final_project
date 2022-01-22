@@ -38,6 +38,8 @@ endfunction
 function void input_agt::connect_phase(uvm_phase phase);
     super.connect_phase(phase);
     agt_i2mdl_port = apb_mon_i.apb_mon_i2mdl_port;
+    // sequencer -> apb_input_drv
+    apb_drv_i.seq_item_port.connect(sqr.seq_item_export);
 endfunction
 
 `endif

@@ -27,11 +27,17 @@ interface apb_uart_interface(input clk, input clk26m, input rst_, input rst26m_)
     endclocking:uart_port
 
     // assertion
-    property check_penable_i;
-		@(posedge clk) disable iff (!rst_)  $rose(psel_i) |-> ##1 penable_i ##1 !penable_i;
-	endproperty: check_penable_i
-	assert property(check_penable_i) else `uvm_error("assert", "penable_i is misbehaving when psel_i is high");
-	cover property(check_penable_i);
+    property check_single_tr_penable_i;
+		@(posedge clk) disable iff (!rst_)  $rose(psel_i) |-> ##1 penable_i;
+	endproperty: check_single_tr_penable_i
+	assert property(check_single_tr_penable_i) else `uvm_error("assert", "penable_i is misbehaving when psel_i is high");
+	cover property(check_single_tr_penable_i);
+
+    property check_multiple_tr_penable_i;
+		@(posedge clk) disable iff (!rst_)  penable_i |-> ##1 psel_i |-> ##1 penable_i;
+	endproperty: check_multiple_tr_penable_i
+	assert property(check_multiple_tr_penable_i) else `uvm_error("assert", "penable_i is misbehaving when psel_i is high");
+	cover property(check_multiple_tr_penable_i);
 
     // coverage
 

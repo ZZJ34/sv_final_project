@@ -6,6 +6,8 @@ import uvm_pkg::*;
 
 `include "./object/transaction.sv"
 
+`include "./object/sequence/base_sequence.sv"
+
 `include "./component/apb_input_driver.sv"
 `include "./component/apb_input_monitor.sv"
 `include "./component/uart_output_monitor.sv"

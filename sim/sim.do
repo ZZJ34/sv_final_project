@@ -37,7 +37,8 @@ add wave -expand -group uart /testbench_top/apb_uart_if/urxd_i
 add wave -expand -group uart /testbench_top/apb_uart_if/utxd_o
 add wave -expand -group uart /testbench_top/dut_top_inst/uart_tx/tx_bpsclk  
 
-add wave -expand -group assert /testbench_top/apb_uart_if/assert__check_penable_i
+add wave -expand -group assert /testbench_top/apb_uart_if/assert__check_multiple_tr_penable_i 
+add wave -expand -group assert /testbench_top/apb_uart_if/assert__check_single_tr_penable_i
 
 # 设置仿真波形时间单位
 configure wave -timelineunits ns
