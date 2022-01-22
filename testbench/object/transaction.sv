@@ -15,12 +15,18 @@ class transaction extends uvm_sequence_item;
     extern function      new (string name = "transaction");
     extern function void print_apb_info ();
     extern function void print_uart_info ();
+    extern function bit  compare(transaction tr);
     
 endclass //transaction
 
 // new
 function transaction::new (string name = "transaction");
     super.new(name);
+endfunction
+
+// compare
+function bit transaction::compare (transaction tr);
+    return this.udata == tr.udata && this.uverify == tr.uverify;
 endfunction
 
 // print_apb_info

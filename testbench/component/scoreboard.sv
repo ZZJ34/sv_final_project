@@ -39,10 +39,10 @@ endfunction
 
 // main_phase
 task scoreboard::main_phase(uvm_phase phase);
-    transaction expect_conf_tr, expect_uart_tr;
+    transaction expect_conf_tr, expect_uart_tr, temp_uart_tr, actual_uart_tr;
     super.main_phase(phase);
     fork
-        // get expect_conf_tr
+        // get expect_conf_tr and check
         while(1) begin
             conf_tr_get_port.get(expect_conf_tr);
             conf_tr_expect_queue.push_back(expect_conf_tr);
@@ -51,6 +51,30 @@ task scoreboard::main_phase(uvm_phase phase);
         while(1) begin
             uart_tr_get_port.get(expect_uart_tr);
             uart_tr_expect_queue.push_back(expect_uart_tr);
+        end
+        // check uart_tr
+        while(1) begin
+            agt_o2scb_get_port.get(actual_uart_tr);
+
+            if(uart_tr_expect_queue.size() > 0) begin
+                temp_uart_tr = uart_tr_expect_queue.pop_front();
+
+                if(temp_uart_tr.compare(actual_uart_tr)) begin
+                    `uvm_info("scoreboard", "Compare SUCCESSFULLY", UVM_LOW);
+                end
+                else begin
+                    `uvm_error("scoreboard", "Compare FAILED");
+                    $display("the expect uart_tr is");
+                    temp_uart_tr.print_uart_info();
+                    $display("the actual uart_tr is");
+                    actual_uart_tr.print_uart_info();
+                end
+            end
+            else begin
+                `uvm_error("scoreboard", "Received data from uart , while expect uart_queue is empty");
+                $display("the unexpected uart_tr is");
+                actual_uart_tr.print_uart_info();
+            end
         end
     join
 endtask
