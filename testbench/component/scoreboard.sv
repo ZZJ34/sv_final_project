@@ -6,7 +6,7 @@ class scoreboard extends uvm_scoreboard;
     transaction conf_tr_expect_queue[$];
     transaction uart_tr_expect_queue[$];
     
-    `uvm_component_utils(scoreboard);
+    `uvm_component_utils(scoreboard)
 
     // model -> scoreboard
     uvm_blocking_get_port #(transaction)  conf_tr_get_port;  // transaction for transaction for register configuration

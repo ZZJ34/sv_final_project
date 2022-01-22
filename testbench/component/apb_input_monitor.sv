@@ -5,7 +5,7 @@ class apb_input_mon extends uvm_monitor;
 
     virtual apb_uart_interface vif; 
 
-    `uvm_component_utils(apb_input_mon);
+    `uvm_component_utils(apb_input_mon)
     
     // apb_input_mon -> uart_output_mon 
     uvm_analysis_port#(transaction) uart_set_port;

@@ -4,7 +4,7 @@
 class model extends uvm_component;
 
    
-    `uvm_component_utils(model);
+    `uvm_component_utils(model)
 
     bit check ; // check bit. default 0(none)
     bit parity; // parity. defalut 0(even parity) ; 1(odd parity)

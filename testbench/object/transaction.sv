@@ -14,7 +14,7 @@ class transaction extends uvm_sequence_item;
     bit [7:0]  udata;            // UART data bit
     bit [1:0]  uverify;          // UART verify bit
 
-    `uvm_object_utils_begin(transaction);
+    `uvm_object_utils_begin(transaction)
         `uvm_field_enum(trans_type, ttype, UVM_ALL_ON | UVM_NOCOMPARE)
         `uvm_field_sarray_int(pdata, UVM_ALL_ON | UVM_NOCOMPARE)
         `uvm_field_sarray_int(paddr, UVM_ALL_ON | UVM_NOCOMPARE)

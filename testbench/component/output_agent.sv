@@ -5,7 +5,7 @@ class output_agt extends uvm_agent;
 
     uart_output_mon uart_mon_o;
 
-    `uvm_component_utils(output_agt);
+    `uvm_component_utils(output_agt)
 
     // output_agt -> model : pointer
     uvm_analysis_port#(transaction) agt_o2mdl_port;

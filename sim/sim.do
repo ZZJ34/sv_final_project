@@ -12,7 +12,7 @@ set SEED 34
 vlog +incdir+$UVM_HOME/src -novopt $UVM_HOME/src/uvm_pkg.sv $WORK_HOME/apb_uart_code/*.v $WORK_HOME/testbench/testbench_top.sv
 
 # 仿真
-vsim -onfinish stop -sv_seed $SEED -assertdebug -novopt -c -sv_lib F:/questasim64_10.6c/uvm-1.1d/win64/uvm_dpi work.testbench_top 
+vsim -onfinish stop -sv_seed $SEED -coverage -assertdebug -novopt -c -sv_lib F:/questasim64_10.6c/uvm-1.1d/win64/uvm_dpi work.testbench_top 
 
 # 仿真设置
 proc external_editor {filename linenumber} { exec "F:/VS code/Microsoft VS Code/Code.exe" -g $filename:$linenumber}
@@ -36,6 +36,8 @@ add wave -expand -group apb_bus /testbench_top/apb_uart_if/uart_int_o
 add wave -expand -group uart /testbench_top/apb_uart_if/urxd_i
 add wave -expand -group uart /testbench_top/apb_uart_if/utxd_o
 add wave -expand -group uart /testbench_top/dut_top_inst/uart_tx/tx_bpsclk  
+
+add wave -expand -group assert /testbench_top/apb_uart_if/assert__check_penable_i
 
 # 设置仿真波形时间单位
 configure wave -timelineunits ns

@@ -16,7 +16,7 @@ class env extends uvm_env;
     uvm_tlm_analysis_fifo#(transaction) agt_o2scb_fifo;
 
 
-    `uvm_component_utils(env);
+    `uvm_component_utils(env)
 
     extern function      new           (string name = "env", uvm_component parent = null);
     extern function void build_phase   (uvm_phase phase);

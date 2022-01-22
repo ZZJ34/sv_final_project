@@ -8,7 +8,7 @@ class uart_output_mon extends uvm_monitor;
     int baud_div ;   // frequency division factor. default 10'd338
     bit check    ;   // check bit. default 0(none)
 
-    `uvm_component_utils(uart_output_mon);
+    `uvm_component_utils(uart_output_mon)
 
     // apb_input_mon -> uart_output_mon
     uvm_analysis_imp#(transaction, uart_output_mon) uart_tx_set_imp;

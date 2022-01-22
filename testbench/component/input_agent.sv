@@ -6,7 +6,7 @@ class input_agt extends uvm_agent;
     apb_input_drv apb_drv_i;
     apb_input_mon apb_mon_i;
 
-    `uvm_component_utils(input_agt);
+    `uvm_component_utils(input_agt)
 
     // input_agt -> model : pointer
     uvm_analysis_port#(transaction) agt_i2mdl_port;

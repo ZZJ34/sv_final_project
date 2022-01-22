@@ -13,6 +13,7 @@ interface apb_uart_interface(input clk, input clk26m, input rst_, input rst26m_)
     logic        utxd_o;              // UART send data line
     logic        uart_int_o;          // UART interrupt signal.active high
 
+    // clocking port
     clocking apb_port @(posedge clk);
         default input #1ns output #1ns;
         output paddr_i, pwdata_i, psel_i, penable_i, pwrite_i;
@@ -24,6 +25,15 @@ interface apb_uart_interface(input clk, input clk26m, input rst_, input rst26m_)
         output urxd_i;
         input utxd_o;
     endclocking:uart_port
+
+    // assertion
+    property check_penable_i;
+		@(posedge clk) disable iff (!rst_)  $rose(psel_i) |-> ##1 penable_i ##1 !penable_i;
+	endproperty: check_penable_i
+	assert property(check_penable_i) else `uvm_error("assert", "penable_i is misbehaving when psel_i is high");
+	cover property(check_penable_i);
+
+    // coverage
 
 endinterface //apb_uart_interface
 
