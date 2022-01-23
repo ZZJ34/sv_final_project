@@ -8,6 +8,8 @@ import uvm_pkg::*;
 
 `include "./object/sequence/base_sequence.sv"
 
+`include "./reg_model/reg_model.sv"
+
 `include "./component/apb_input_driver.sv"
 `include "./component/apb_input_monitor.sv"
 `include "./component/uart_output_monitor.sv"

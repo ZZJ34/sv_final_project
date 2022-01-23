@@ -7,8 +7,8 @@ class reg_delay extends uvm_reg; // -> uart_delay
 
     `uvm_object_utils(reg_delay)
 
-    function void build ();
-    function      new   (string name = "reg_delay");
+    extern function void build ();
+    extern function      new   (string name = "reg_delay");
 
 endclass
 

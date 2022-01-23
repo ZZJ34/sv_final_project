@@ -7,8 +7,8 @@ class reg_rxfifo_stat extends uvm_reg; // -> uart_rxfifo_stat
 
     `uvm_object_utils(reg_rxfifo_stat)
 
-    function void build ();
-    function      new   (string name = "reg_rxfifo_stat");
+    extern function void build ();
+    extern function      new   (string name = "reg_rxfifo_stat");
 
 endclass
 

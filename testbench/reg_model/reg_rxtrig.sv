@@ -7,8 +7,8 @@ class reg_rxtrig extends uvm_reg; // -> uart_rxtrig
 
     `uvm_object_utils(reg_rxtrig)
 
-    function void build ();
-    function      new   (string name = "reg_rxtrig");
+    extern function void build ();
+    extern function      new   (string name = "reg_rxtrig");
 
 endclass
 

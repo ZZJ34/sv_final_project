@@ -7,8 +7,8 @@ class reg_txtrig extends uvm_reg; // -> uart_txtrig
 
     `uvm_object_utils(reg_txtrig)
 
-    function void build ();
-    function      new   (string name = "reg_txtrig");
+    extern function void build ();
+    extern function      new   (string name = "reg_txtrig");
 
 endclass
 

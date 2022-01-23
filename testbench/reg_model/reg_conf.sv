@@ -12,8 +12,8 @@ class reg_conf extends uvm_reg;  // -> uart_conf
 
     `uvm_object_utils(reg_conf)
 
-    function void build ();
-    function      new   (string name = "reg_conf");
+    extern function void build ();
+    extern function      new   (string name = "reg_conf");
 
 endclass
 
