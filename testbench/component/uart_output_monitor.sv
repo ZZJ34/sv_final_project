@@ -108,14 +108,12 @@ function void uart_output_mon::write (transaction tr);
     // set baud
     if(tr.paddr == 32'h08) begin
         this.baud_div = tr.pdata;
-        `uvm_info("uart_output_mon", "\n set receive baud_div", UVM_LOW);
-        $display(this.baud_div);
+        `uvm_info("uart_output_mon", $sformatf("\nset receive baud_div: %0d", this.baud_div), UVM_LOW);
     end
     // set check
     if(tr.paddr == 32'h0c) begin
         this.check = tr.pdata[0];
-        `uvm_info("uart_output_mon", "\n set check bit", UVM_LOW);
-        $display(this.check);
+        `uvm_info("uart_output_mon", $sformatf("\nset check bit: %0d", this.check), UVM_LOW);
     end
 endfunction
 
