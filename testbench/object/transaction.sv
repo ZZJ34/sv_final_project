@@ -99,7 +99,7 @@ function void transaction::print_apb_info ();
             s={s,$sformatf("    data(h) : %1h\n", this.pdata)};
         end
         else if(this.paddr == 32'h20 || this.paddr == 32'h24) begin
-            s={s,$sformatf("    data(b) : %6b\n", this.pdata)};
+            s={s,$sformatf("    data(b) : %5b\n", this.pdata)};
             s={s,$sformatf("    data(d) : %0d\n", this.pdata)};
             s={s,$sformatf("    data(h) : %2h\n", this.pdata)};
         end
