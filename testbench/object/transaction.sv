@@ -13,6 +13,7 @@ class transaction extends uvm_sequence_item;
     rand bit [31:0] paddr;       // APB address bus
     bit [7:0]  udata;            // UART data bit
     bit [1:0]  uverify;          // UART verify bit
+    
 
     `uvm_object_utils_begin(transaction)
         `uvm_field_enum(trans_type, ttype, UVM_ALL_ON | UVM_NOCOMPARE)
@@ -22,9 +23,27 @@ class transaction extends uvm_sequence_item;
         `uvm_field_sarray_int(uverify, UVM_ALL_ON)
     `uvm_object_utils_end
 
+    constraint c_paddr {
+        soft paddr inside {32'h00, 32'h04, 32'h08, 32'h0c, 32'h10, 32'h14, 32'h18, 32'h1c, 32'h20, 32'h24};
+    }
+
+    constraint c_pdata {
+        soft (ttype == WRITE) -> (paddr == 32'h00) -> pdata inside {[32'h00: 32'hff]};
+        soft (ttype == WRITE) -> (paddr == 32'h08) -> pdata inside {[32'd13: 32'd676]};
+        soft (ttype == WRITE) -> (paddr == 32'h0c) -> pdata[31:16] == 16'b0;
+        soft (ttype == WRITE) -> (paddr == 32'h10) -> pdata inside {[32'd1: 32'd8]};
+        soft (ttype == WRITE) -> (paddr == 32'h14) -> pdata inside {[32'd0: 32'd8]};
+        soft (ttype == WRITE) -> (paddr == 32'h18) -> pdata inside {[32'd0: 32'd8]};
+        soft (ttype == WRITE) -> (paddr == 32'h1c) -> pdata == 32'h1;
+    }
+
+    constraint c_order {
+        solve ttype before paddr;
+        solve paddr before pdata;
+    }
+
 
     extern function      new (string name = "transaction");
-    extern function void post_randomize ();
     extern function void print_apb_info ();
     extern function void print_uart_info ();
     
@@ -33,10 +52,6 @@ endclass //transaction
 // new
 function transaction::new (string name = "transaction");
     super.new(name);
-endfunction
-
-// post_randomize
-function void transaction::post_randomize ();
 endfunction
 
 // print_apb_info
@@ -63,9 +78,31 @@ function void transaction::print_apb_info ();
         s={s,$sformatf("       addr : %2h\n", this.paddr)};
         s={s,$sformatf("description : %s\n", description_s)};
         s={s,$sformatf("  direction : %s\n", this.ttype ? "write" : "read")};
-        s={s,$sformatf("    data(b) : %8b\n", this.pdata)};
-        s={s,$sformatf("    data(d) : %0d\n", this.pdata)};
-        s={s,$sformatf("    data(h) : %2h\n", this.pdata)};
+        if(this.paddr == 32'h00 || this.paddr == 32'h04) begin
+            s={s,$sformatf("    data(b) : %8b\n", this.pdata)};
+            s={s,$sformatf("    data(d) : %0d\n", this.pdata)};
+            s={s,$sformatf("    data(h) : %2h\n", this.pdata)};
+        end
+        else if(this.paddr == 32'h08) begin
+            s={s,$sformatf("    data(b) : %10b\n", this.pdata)};
+            s={s,$sformatf("    data(d) : %0d\n", this.pdata)};
+            s={s,$sformatf("    data(h) : %3h\n", this.pdata)};
+        end
+        else if(this.paddr == 32'h0c) begin
+            s={s,$sformatf("    data(b) : %16b\n", this.pdata)};
+            s={s,$sformatf("    data(d) : %0d\n", this.pdata)};
+            s={s,$sformatf("    data(h) : %4h\n", this.pdata)};
+        end
+        else if(this.paddr == 32'h10 || this.paddr == 32'h14 || this.paddr == 32'h18 || this.paddr == 32'h1c) begin
+            s={s,$sformatf("    data(b) : %4b\n", this.pdata)};
+            s={s,$sformatf("    data(d) : %0d\n", this.pdata)};
+            s={s,$sformatf("    data(h) : %1h\n", this.pdata)};
+        end
+        else if(this.paddr == 32'h20 || this.paddr == 32'h24) begin
+            s={s,$sformatf("    data(b) : %6b\n", this.pdata)};
+            s={s,$sformatf("    data(d) : %0d\n", this.pdata)};
+            s={s,$sformatf("    data(h) : %2h\n", this.pdata)};
+        end
     end
     else begin
         s={s,$sformatf("%s", "do nothing")};
