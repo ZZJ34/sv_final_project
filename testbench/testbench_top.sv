@@ -63,14 +63,14 @@ module testbench_top;
     initial begin
         // $display($get_initial_random_seed);
         // $display($random);
-        run_test("env");
+        run_test("test_case0");
     end
 
     initial begin
-        uvm_config_db#(virtual apb_uart_interface)::set(null, "uvm_test_top.agt_i.apb_drv_i", "vif", apb_uart_if);
-        uvm_config_db#(virtual apb_uart_interface)::set(null, "uvm_test_top.agt_i.apb_mon_i", "vif", apb_uart_if);
+        uvm_config_db#(virtual apb_uart_interface)::set(null, "uvm_test_top.env.agt_i.apb_drv_i", "vif", apb_uart_if);
+        uvm_config_db#(virtual apb_uart_interface)::set(null, "uvm_test_top.env.agt_i.apb_mon_i", "vif", apb_uart_if);
 
-        uvm_config_db#(virtual apb_uart_interface)::set(null, "uvm_test_top.agt_o.uart_mon_o", "vif", apb_uart_if);
+        uvm_config_db#(virtual apb_uart_interface)::set(null, "uvm_test_top.env.agt_o.uart_mon_o", "vif", apb_uart_if);
     end
     
 endmodule

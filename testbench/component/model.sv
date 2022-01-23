@@ -87,7 +87,7 @@ task model::main_phase(uvm_phase phase);
         end
 
         // send transaction to scb
-        if(tr.paddr == 32'h00)
+        if(tr.paddr == 32'h00 && tr.ttype == transaction::WRITE)
             uart_tr_port.write(tr);
         else
             conf_tr_port.write(tr);

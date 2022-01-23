@@ -1,7 +1,7 @@
 `ifndef ENVIRONMENT_SV
 `define ENVIRONMENT_SV
 
-class env extends uvm_env;
+class top_env extends uvm_env;
 
     input_agt  agt_i;
     output_agt agt_o;
@@ -16,9 +16,9 @@ class env extends uvm_env;
     uvm_tlm_analysis_fifo#(transaction) agt_o2scb_fifo;
 
 
-    `uvm_component_utils(env)
+    `uvm_component_utils(top_env)
 
-    extern function      new           (string name = "env", uvm_component parent = null);
+    extern function      new           (string name = "top_env", uvm_component parent = null);
     extern function void build_phase   (uvm_phase phase);
     extern function void connect_phase (uvm_phase phase); 
  
@@ -26,12 +26,12 @@ class env extends uvm_env;
 endclass //env
 
 // new
-function env::new (string name = "env", uvm_component parent = null);
+function top_env::new (string name = "top_env", uvm_component parent = null);
     super.new(name, parent);
 endfunction
 
 // build_phase
-function void env::build_phase (uvm_phase phase);
+function void top_env::build_phase (uvm_phase phase);
     super.build_phase(phase);
     // instance agt_i
     agt_i = input_agt::type_id::create("agt_i", this);
@@ -50,7 +50,7 @@ function void env::build_phase (uvm_phase phase);
 endfunction
 
 // connect_phase
-function void env::connect_phase (uvm_phase phase);
+function void top_env::connect_phase (uvm_phase phase);
     super.connect_phase(phase);
     // apb_input_mon -> uart_output_mon
     agt_i.apb_mon_i.uart_set_port.connect(agt_o.uart_mon_o.uart_tx_set_imp);

@@ -49,39 +49,41 @@ endfunction
 // main_phase
 task scoreboard::main_phase(uvm_phase phase);
     transaction expect_conf_tr, expect_uart_tr, temp_uart_tr, actual_uart_tr;
-    uvm_status_e status;
-    uvm_reg_data_t value;
+    uvm_status_e var_status;
+    uvm_reg_data_t var_value;
     super.main_phase(phase);
     fork
         // get expect_conf_tr and check
         while(1) begin
             conf_tr_get_port.get(expect_conf_tr);
             #10
+            // tx
+            if(expect_conf_tr.paddr == 32'h00) rm.tx.peek(var_status, var_value);
             // buad
-            if(expect_conf_tr.paddr == 32'h08) rm.baud.peek(status, value);
+            if(expect_conf_tr.paddr == 32'h08) rm.baud.peek(var_status, var_value);
             // delay
-            if(expect_conf_tr.paddr == 32'h18) rm.delay.peek(status, value);
+            if(expect_conf_tr.paddr == 32'h18) rm.delay.peek(var_status, var_value);
             // rxtrig
-            if(expect_conf_tr.paddr == 32'h10) rm.rxtrig.peek(status, value);
+            if(expect_conf_tr.paddr == 32'h10) rm.rxtrig.peek(var_status, var_value);
             // txtrig
-            if(expect_conf_tr.paddr == 32'h14) rm.txtrig.peek(status, value);
+            if(expect_conf_tr.paddr == 32'h14) rm.txtrig.peek(var_status, var_value);
             // rxfifo_stat
-            if(expect_conf_tr.paddr == 32'h20) rm.rxfifo_stat.peek(status, value);
+            if(expect_conf_tr.paddr == 32'h20) rm.rxfifo_stat.peek(var_status, var_value);
             // txfifo_stat
-            if(expect_conf_tr.paddr == 32'h24) rm.txfifo_stat.peek(status, value);
+            if(expect_conf_tr.paddr == 32'h24) rm.txfifo_stat.peek(var_status, var_value);
             // conf
-            if(expect_conf_tr.paddr == 32'h0c) rm.conf.peek(status, value);
+            if(expect_conf_tr.paddr == 32'h0c) rm.conf.peek(var_status, var_value);
             // status
-            if(expect_conf_tr.paddr == 32'h1c) rm.status.peek(status, value);
+            if(expect_conf_tr.paddr == 32'h1c) rm.status.peek(var_status, var_value);
 
-            if(expect_conf_tr.pdata == value) begin
+            if(expect_conf_tr.pdata == var_value) begin
                 `uvm_info("scoreboard", "\nCompare APB REG SUCCESSFULLY", UVM_LOW);
             end
             else begin
                 `uvm_error("scoreboard", "\nCompare APB REG FAILED");
                 $display("the expect apb_tr is");
                 expect_conf_tr.print_apb_info();
-                $display("the actual apb reg data is: %d", value);
+                $display("the actual apb reg data is: %d", var_value);
             end
 
 

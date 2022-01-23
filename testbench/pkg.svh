@@ -6,8 +6,9 @@ import uvm_pkg::*;
 
 `include "./object/transaction.sv"
 
-`include "./object/sequence/base_sequence.sv"
+// `include "./object/sequence/base_sequence.sv"
 
+`include "./reg_model/reg_tx.sv"
 `include "./reg_model/reg_baud.sv"
 `include "./reg_model/reg_conf.sv"
 `include "./reg_model/reg_delay.sv"
@@ -27,3 +28,6 @@ import uvm_pkg::*;
 `include "./component/model.sv"
 `include "./component/scoreboard.sv"
 `include "./component/environment.sv"
+
+`include "./test_case/base_test.sv"
+`include "./test_case/test_case0.sv"

@@ -43,8 +43,12 @@ task apb_input_drv::main_phase (uvm_phase phase);
 
     while (1) begin
         seq_item_port.try_next_item(req);
-        if(req == null || req.ttype == 2)
+        if(req == null)
             idle_state();
+        else if (req.ttype == transaction::IDLE) begin
+            idle_state();
+            seq_item_port.item_done();
+        end
         else begin
             setup_state(req);
             enable_state(req);
