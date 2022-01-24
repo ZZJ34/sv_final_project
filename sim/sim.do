@@ -7,12 +7,13 @@ set WORK_HOME D:/sv_final_project/
 # 初始种子值
 # set SEED [expr int(rand() * 100)]
 set SEED 34
+set TEST test_case0
 
 # 编译
 vlog +incdir+$UVM_HOME/src -novopt $UVM_HOME/src/uvm_pkg.sv $WORK_HOME/apb_uart_code/*.v $WORK_HOME/testbench/testbench_top.sv
 
 # 仿真
-vsim -onfinish stop -sv_seed $SEED -coverage -assertdebug -novopt -c -sv_lib F:/questasim64_10.6c/uvm-1.1d/win64/uvm_dpi work.testbench_top 
+vsim -onfinish stop -sv_seed $SEED -coverage -assertdebug -novopt -c -sv_lib F:/questasim64_10.6c/uvm-1.1d/win64/uvm_dpi work.testbench_top +UVM_TESTNAME=$TEST
 
 # 仿真设置
 proc external_editor {filename linenumber} { exec "F:/VS code/Microsoft VS Code/Code.exe" -g $filename:$linenumber}

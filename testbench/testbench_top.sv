@@ -63,7 +63,7 @@ module testbench_top;
     initial begin
         // $display($get_initial_random_seed);
         // $display($random);
-        run_test("test_case0");
+        run_test( );
     end
 
     initial begin
