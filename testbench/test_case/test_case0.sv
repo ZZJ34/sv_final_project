@@ -15,7 +15,6 @@ class case0_sequence extends uvm_sequence #(transaction);
     extern task     body ();
 
 endclass
-
 // new
 function case0_sequence::new (string name = "case0_sequence");
     super.new(name);
@@ -74,12 +73,10 @@ class test_case0 extends base_test;
     extern virtual function void build_phase (uvm_phase phase); 
 
 endclass
-
 // new
 function test_case0::new (string name = "test_case0", uvm_component parent = null);
     super.new(name, parent, "test_case0");
 endfunction
-
 // build_phase
 function void test_case0::build_phase(uvm_phase phase);
     super.build_phase(phase);

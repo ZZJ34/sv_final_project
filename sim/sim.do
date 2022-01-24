@@ -7,7 +7,8 @@ set WORK_HOME D:/sv_final_project/
 # 初始种子值
 # set SEED [expr int(rand() * 100)]
 set SEED 34
-set TEST test_case0
+# set TEST test_case0
+set TEST test_case1
 
 # 编译
 vlog +incdir+$UVM_HOME/src -novopt $UVM_HOME/src/uvm_pkg.sv $WORK_HOME/apb_uart_code/*.v $WORK_HOME/testbench/testbench_top.sv

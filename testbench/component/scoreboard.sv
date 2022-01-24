@@ -80,7 +80,7 @@ task scoreboard::main_phase(uvm_phase phase);
             if(expect_conf_tr.paddr == 32'h1c) rm.status.peek(var_status, var_value);
 
             case(expect_conf_tr.paddr)
-                32'h00, 32'h08, 32'h0c, 32'h10, 32'h14, 32'h18 : result = expect_conf_tr.pdata == var_value ? "SUCCESS" : "FAIL";
+                32'h00, 32'h08, 32'h10, 32'h14, 32'h18 : result = expect_conf_tr.pdata == var_value ? "SUCCESS" : "FAIL";
                 32'h04, 32'h20, 32'h24 : begin
                     if (expect_conf_tr.ttype == transaction::WRITE)
                         result = "ILLEGAL";
@@ -93,6 +93,13 @@ task scoreboard::main_phase(uvm_phase phase);
                     else
                         result = var_value == 0 ? "SUCCESS" : "FAIL";
                 end
+                32'h0c: result = expect_conf_tr.pdata[0] == var_value[0] && 
+                                 expect_conf_tr.pdata[1] == var_value[1] && 
+                                 expect_conf_tr.pdata[2] == var_value[2] && 
+                                 expect_conf_tr.pdata[3] == var_value[3] && 
+                                 expect_conf_tr.pdata[14] == var_value[14] && 
+                                 expect_conf_tr.pdata[15] == var_value[15] 
+                                 ? "SUCCESS" : "FAIL";
             endcase
 
 
