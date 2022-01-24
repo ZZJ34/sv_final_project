@@ -4,7 +4,7 @@
 class transaction extends uvm_sequence_item;
 
     // APB write or read signal.1:write,0:read 
-    typedef enum{READ=0, WRITE=1, IDLE=2}  trans_type;
+    typedef enum{READ=0, WRITE=1, IDLE=2, UART_INT=3}  trans_type;
 
     
 	rand trans_type ttype;       // transaction type
@@ -22,6 +22,10 @@ class transaction extends uvm_sequence_item;
         `uvm_field_sarray_int(udata, UVM_ALL_ON)
         `uvm_field_sarray_int(uverify, UVM_ALL_ON)
     `uvm_object_utils_end
+
+    constraint c_ttype {
+        soft ttype inside {READ, WRITE, IDLE};
+    }
 
     constraint c_paddr {
         soft paddr inside {32'h00, 32'h04, 32'h08, 32'h0c, 32'h10, 32'h14, 32'h18, 32'h1c, 32'h20, 32'h24};

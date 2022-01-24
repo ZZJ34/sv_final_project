@@ -27,13 +27,13 @@ task case3_sequence::body();
     end
 
     // 随机设置波特率
-    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h08;});
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h08;})
     // 随机设置无奇偶校验位、有停止位
-    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h0c; req.pdata[14] == 0; req.pdata[0] == 1;});
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h0c; req.pdata[14] == 0; req.pdata[0] == 1;})
     // 随机设置 TX FIFO 触发深度
-    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h14; });
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h14; })
     // 随机设置帧间隔为 2
-    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h18; });
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h18; })
 
     // 发送数据
     `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h00;})

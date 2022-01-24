@@ -35,3 +35,4 @@ import uvm_pkg::*;
 `include "./test_case/test_case1.sv"
 `include "./test_case/test_case2.sv"
 `include "./test_case/test_case3.sv"
+`include "./test_case/test_case4.sv"
