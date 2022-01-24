@@ -119,7 +119,7 @@ function void transaction::print_uart_info ();
     s={s,$sformatf("     data(d) : %0d\n", this.udata)};
     s={s,$sformatf("     data(h) : %2h\n", this.udata)};
     if(this.uverify[1])
-        s={s,$sformatf("    uverify : %0b\n", this.uverify[0])};
+        s={s,$sformatf("     uverify : %0b\n", this.uverify[0])};
     else
         s={s,$sformatf("     no verify bit\n")};
 	s={s,"======================================================="};

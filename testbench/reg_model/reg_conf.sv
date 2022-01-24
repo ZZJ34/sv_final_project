@@ -4,7 +4,7 @@
 class reg_conf extends uvm_reg;  // -> uart_conf
 
     rand uvm_reg_field check;      // bit[0] 决定是否有校验位
-    rand uvm_reg_field parity;     // bit[1] 决定奇偶校验模式   (1-奇校验，0-偶校验)
+    rand uvm_reg_field parity;     // bit[1] 决定奇偶校验模式   (0-奇校验，1-偶校验)
     rand uvm_reg_field stop_bit;   // bit[2] 决定是否有停止位   (只对 TX 有效)
     rand uvm_reg_field st_check;   // bit[3] 决定是否校验停止位 (只对 RX 有效)
     rand uvm_reg_field txrst;      // bit[14] 决定 TX FIFO 复位

@@ -7,7 +7,7 @@ class model extends uvm_component;
     `uvm_component_utils(model)
 
     bit check ; // check bit. default 0(none)
-    bit parity; // parity. defalut 0(even parity) ; 1(odd parity)
+    bit parity; // parity. defalut 0(odd parity) ; 1(even parity)
 
     // input_agt -> model
     uvm_blocking_get_port#(transaction) agt_i2mdl_get_port;
@@ -58,13 +58,13 @@ task model::main_phase(uvm_phase phase);
         // tr.print_apb_info();
 
         // record check and parity
-        if(tr.ttype == 1 && tr.paddr == 32'h0c) begin
+        if(tr.ttype == transaction::WRITE && tr.paddr == 32'h0c) begin
             this.check = tr.pdata[0];
             this.parity = tr.pdata[1];
         end
 
         // calculate parity
-        if(tr.ttype == 1 && tr.paddr == 32'h00) begin
+        if(tr.ttype == transaction::WRITE && tr.paddr == 32'h00) begin
             // udata
             tr.udata = tr.pdata;
             // uverify
@@ -72,15 +72,16 @@ task model::main_phase(uvm_phase phase);
                 tr.uverify = 2'b00;
             else begin
                 // count 1
-                int count;
-                for (int i = 0; i < 7; i++) begin
+                int count = 0;
+                for (int i = 0; i <= 7; i++) begin
                     bit temp = ((tr.pdata >> i) & 1);
                     count += temp;
                 end
                 if(count % 2 == 0) 
-                    tr.uverify = this.parity == 0 ? 2'b10 : 2'b11;
+
+                    tr.uverify = this.parity ? 2'b10 : 2'b11;
                 else 
-                    tr.uverify = this.parity == 0 ? 2'b11 : 2'b10;
+                    tr.uverify = this.parity ? 2'b11 : 2'b10;
 
             end
         
