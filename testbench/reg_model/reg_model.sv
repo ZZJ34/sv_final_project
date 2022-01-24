@@ -12,6 +12,7 @@ class reg_model extends uvm_reg_block;
     rand reg_conf conf;
     rand reg_status status;
     rand reg_tx tx;
+    rand reg_rx rx;
 
     `uvm_object_utils(reg_model)
 
@@ -72,6 +73,12 @@ function void reg_model::build ();
     tx = reg_tx::type_id::create("tx", , get_full_name());
     tx.configure(this, null, "uart_tx");
     tx.build();
+
+    // uart_rx
+    rx = reg_rx::type_id::create("rx", , get_full_name());
+    rx.configure(this, null, "uart_rx");
+    rx.build();
+    
 endfunction
 
 `endif

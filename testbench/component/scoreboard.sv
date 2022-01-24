@@ -51,6 +51,7 @@ task scoreboard::main_phase(uvm_phase phase);
     transaction expect_conf_tr, expect_uart_tr, temp_uart_tr, actual_uart_tr;
     uvm_status_e var_status;
     uvm_reg_data_t var_value;
+    string result;
     super.main_phase(phase);
     fork
         // get expect_conf_tr and check
@@ -59,6 +60,8 @@ task scoreboard::main_phase(uvm_phase phase);
             #10
             // tx
             if(expect_conf_tr.paddr == 32'h00) rm.tx.peek(var_status, var_value);
+            // rx
+            if(expect_conf_tr.paddr == 32'h04) rm.rx.peek(var_status, var_value);
             // buad
             if(expect_conf_tr.paddr == 32'h08) rm.baud.peek(var_status, var_value);
             // delay
@@ -76,14 +79,34 @@ task scoreboard::main_phase(uvm_phase phase);
             // status
             if(expect_conf_tr.paddr == 32'h1c) rm.status.peek(var_status, var_value);
 
-            if(expect_conf_tr.pdata == var_value) begin
+            case(expect_conf_tr.paddr)
+                32'h00, 32'h08, 32'h0c, 32'h10, 32'h14, 32'h18 : result = expect_conf_tr.pdata == var_value ? "SUCCESS" : "FAIL";
+                32'h04, 32'h20, 32'h24 : begin
+                    if (expect_conf_tr.ttype == transaction::WRITE)
+                        result = "ILLEGAL";
+                    else
+                        result = expect_conf_tr.pdata == var_value ? "SUCCESS" : "FAIL";
+                end
+                32'h1c: begin
+                    if (expect_conf_tr.ttype == transaction::READ)
+                        result = expect_conf_tr.pdata == var_value ? "SUCCESS" : "FAIL";
+                    else
+                        result = var_value == 0 ? "SUCCESS" : "FAIL";
+                end
+            endcase
+
+
+            if(result == "SUCCESS") begin
                 `uvm_info("scoreboard", "\nCompare APB REG SUCCESSFULLY", UVM_LOW);
             end
-            else begin
+            else if(result == "FAIL") begin
                 `uvm_error("scoreboard", "\nCompare APB REG FAILED");
                 $display("the expect apb_tr is");
                 expect_conf_tr.print_apb_info();
                 $display("the actual apb reg data is: %d", var_value);
+            end
+            else begin
+                `uvm_info("scoreboard", "\nIllegal Operation", UVM_LOW);
             end
 
 

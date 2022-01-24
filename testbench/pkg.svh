@@ -9,6 +9,7 @@ import uvm_pkg::*;
 // `include "./object/sequence/base_sequence.sv"
 
 `include "./reg_model/reg_tx.sv"
+`include "./reg_model/reg_rx.sv"
 `include "./reg_model/reg_baud.sv"
 `include "./reg_model/reg_conf.sv"
 `include "./reg_model/reg_delay.sv"

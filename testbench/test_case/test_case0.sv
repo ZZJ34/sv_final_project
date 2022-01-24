@@ -31,8 +31,32 @@ task case0_sequence::body();
     `uvm_do_with(req, {req.ttype == transaction::IDLE;})
     `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h00;})
     `uvm_do_with(req, {req.ttype == transaction::READ; req.paddr == 32'h00;})
+    `uvm_do_with(req, {req.ttype == transaction::READ; req.paddr == 32'h04;})
 
-    #8000000;
+    #6000000;
+
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h08;})
+    `uvm_do_with(req, {req.ttype == transaction::READ; req.paddr == 32'h08;})
+    
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h0c;})
+    `uvm_do_with(req, {req.ttype == transaction::READ; req.paddr == 32'h0c;})
+    
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h10;})
+    `uvm_do_with(req, {req.ttype == transaction::READ; req.paddr == 32'h10;})
+    
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h14;})
+    `uvm_do_with(req, {req.ttype == transaction::READ; req.paddr == 32'h14;})
+    
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h18;})
+    `uvm_do_with(req, {req.ttype == transaction::READ; req.paddr == 32'h18;})
+
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h1c;})
+    `uvm_do_with(req, {req.ttype == transaction::READ; req.paddr == 32'h1c;})
+
+    `uvm_do_with(req, {req.ttype == transaction::READ; req.paddr == 32'h20;})
+    `uvm_do_with(req, {req.ttype == transaction::READ; req.paddr == 32'h24;})
+
+    #100;
     
 
     if(this.starting_phase != null) begin
