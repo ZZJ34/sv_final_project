@@ -5,8 +5,7 @@ vlib work
 set UVM_HOME F:/questasim64_10.6c/verilog_src/uvm-1.1d   
 set WORK_HOME D:/sv_final_project/
 # 初始种子值
-# set SEED [expr int(rand() * 100)]
-set SEED 34
+set SEED [expr int(rand() * 100)]
 set TEST test_case0
 # set TEST test_case1
 # set TEST test_case2
