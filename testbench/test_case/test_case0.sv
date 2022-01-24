@@ -27,33 +27,52 @@ task case0_sequence::body();
     end
     
     `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h00;})
+    get_response(rsp);
     `uvm_do_with(req, {req.ttype == transaction::IDLE;})
+    get_response(rsp);
     `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h00;})
+    get_response(rsp);
     `uvm_do_with(req, {req.ttype == transaction::READ; req.paddr == 32'h00;})
+    get_response(rsp);
     `uvm_do_with(req, {req.ttype == transaction::READ; req.paddr == 32'h04;})
+    get_response(rsp);
 
     #6000000;
 
     `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h08;})
+    get_response(rsp);
     `uvm_do_with(req, {req.ttype == transaction::READ; req.paddr == 32'h08;})
+    get_response(rsp);
     
     `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h0c;})
+    get_response(rsp);
     `uvm_do_with(req, {req.ttype == transaction::READ; req.paddr == 32'h0c;})
+    get_response(rsp);
     
     `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h10;})
+    get_response(rsp);
     `uvm_do_with(req, {req.ttype == transaction::READ; req.paddr == 32'h10;})
+    get_response(rsp);
     
     `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h14;})
+    get_response(rsp);
     `uvm_do_with(req, {req.ttype == transaction::READ; req.paddr == 32'h14;})
+    get_response(rsp);
     
     `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h18;})
+    get_response(rsp);
     `uvm_do_with(req, {req.ttype == transaction::READ; req.paddr == 32'h18;})
+    get_response(rsp);
 
     `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h1c;})
+    get_response(rsp);
     `uvm_do_with(req, {req.ttype == transaction::READ; req.paddr == 32'h1c;})
+    get_response(rsp);
 
     `uvm_do_with(req, {req.ttype == transaction::READ; req.paddr == 32'h20;})
+    get_response(rsp);
     `uvm_do_with(req, {req.ttype == transaction::READ; req.paddr == 32'h24;})
+    get_response(rsp);
 
     #100;
     

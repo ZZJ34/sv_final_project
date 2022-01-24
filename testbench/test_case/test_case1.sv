@@ -27,23 +27,34 @@ task case1_sequence::body();
     end
 
     `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h00;})
+    get_response(rsp);
     #3000000;
 
     // 对只读寄存器进行写操作
     `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h04;})
+    get_response(rsp);
     `uvm_do_with(req, {req.ttype == transaction::IDLE;})
+    get_response(rsp);
     `uvm_do_with(req, {req.ttype == transaction::READ; req.paddr == 32'h04;})
+    get_response(rsp);
 
     `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h20;})
+    get_response(rsp);
     `uvm_do_with(req, {req.ttype == transaction::IDLE;})
+    get_response(rsp);
     `uvm_do_with(req, {req.ttype == transaction::READ; req.paddr == 32'h20;})
+    get_response(rsp);
 
     `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h24;})
+    get_response(rsp);
     `uvm_do_with(req, {req.ttype == transaction::IDLE;})
+    get_response(rsp);
     `uvm_do_with(req, {req.ttype == transaction::READ; req.paddr == 32'h24;})
+    get_response(rsp);
 
 
     `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h00;})
+    get_response(rsp);
     #3000000;
 
 
@@ -58,10 +69,13 @@ task case1_sequence::body();
                         req.pdata[14] == 0;
                         req.pdata[15] == 0;
                         })
+    get_response(rsp);
     `uvm_do_with(req, {req.ttype == transaction::IDLE;})
+    get_response(rsp);
     `uvm_do_with(req, {req.ttype == transaction::READ; req.paddr == 32'h0c;})
-
+    get_response(rsp);
     `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h00;})
+    get_response(rsp);
     #3000000;
 
     
