@@ -3,7 +3,9 @@
 
 class apb_input_mon extends uvm_monitor;
 
-    virtual apb_uart_interface vif; 
+    virtual apb_uart_interface vif;
+
+    coverage cvg;
 
     `uvm_component_utils(apb_input_mon)
     
@@ -35,6 +37,8 @@ function void apb_input_mon::build_phase (uvm_phase phase);
     uart_set_port = new("uart_set_port", this);
     // initialize apb_mon_i2mdl_port
     apb_mon_i2mdl_port = new("apb_mon_i2mdl_port", this);
+
+    this.cvg = new();
 endfunction
 
 // main_task
@@ -60,12 +64,23 @@ task apb_input_mon::main_phase (uvm_phase phase);
             // display transaction info
             tr.print_apb_info();
 
+            // coverage
+            cvg.sample(tr);
+
             // to model
             apb_mon_i2mdl_port.write(tr);
+
 
             // to uart_output_mon
             // set baud & set check
             if(tr.ttype == 1 && (tr.paddr == 32'h08 || tr.paddr == 32'h0c)) uart_set_port.write(tr);
+        end
+
+        if (this.vif.psel_i == 0 && this.vif.penable_i == 0) begin
+            tr = new("tr");
+            tr.ttype = transaction::IDLE;
+            // coverage
+            cvg.sample(tr);
         end
     end
 endtask

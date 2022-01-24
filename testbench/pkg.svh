@@ -8,6 +8,8 @@ import uvm_pkg::*;
 
 // `include "./object/sequence/base_sequence.sv"
 
+`include "./coverage.sv"
+
 `include "./reg_model/reg_tx.sv"
 `include "./reg_model/reg_rx.sv"
 `include "./reg_model/reg_baud.sv"
@@ -36,3 +38,4 @@ import uvm_pkg::*;
 `include "./test_case/test_case2.sv"
 `include "./test_case/test_case3.sv"
 `include "./test_case/test_case4.sv"
+`include "./test_case/test_case5.sv"

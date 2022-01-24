@@ -23,7 +23,6 @@ endfunction
 task case4_sequence::body();
 
     int count = 0;
-    int i = 0;
 
     if(this.starting_phase != null) begin
         this.starting_phase.raise_objection(this);
@@ -34,7 +33,7 @@ task case4_sequence::body();
     `uvm_do_with(req, {req.ttype == transaction::IDLE;})
 
     // 传输数据
-    while (i < 200000000) begin
+    while (1) begin
         if(count <= 16) begin
             `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h00;})
             get_response(rsp);
