@@ -49,21 +49,16 @@ endfunction
 // main_phase
 task uart_output_mon::main_phase (uvm_phase phase);
     transaction tr;
-
     bit uart_data_history = 1;
     bit uart_data_start = 0;
     int uart_data_cnt = 0;
     int uart_baud_cnt = 0;
-
     bit[8:0] uart_data;
-
     // wait reset end
     wait(this.vif.rst26m_ == 1);
     // collect one uart data
     while (1) begin
-
         @(posedge this.vif.clk26m);
-
         // detect falling edge
         if(~uart_data_start && uart_data_history && ~this.vif.uart_port.utxd_o) begin
             `uvm_info("uart_output_mon", "\n uart falling edge!", UVM_LOW);
@@ -71,20 +66,14 @@ task uart_output_mon::main_phase (uvm_phase phase);
             uart_baud_cnt = 0;
             uart_data_cnt= 0;
         end
-        
         uart_data_history = this.vif.uart_port.utxd_o;
-
         // data
         if(uart_data_start) begin
             uart_baud_cnt = uart_baud_cnt  > ((this.baud_div + 1) << 4) - 1 ? 0 : uart_baud_cnt + 1;
-
             uart_data_cnt = uart_baud_cnt == ((this.baud_div + 1) << 4) - 1 ? uart_data_cnt + 1 : uart_data_cnt;
-
             if(uart_baud_cnt == ((this.baud_div + 1) << 4)/2 && uart_data_cnt != 0) begin
                 uart_data[uart_data_cnt-1] = this.vif.uart_port.utxd_o;
-            end
-        
-                
+            end  
             if(uart_data_cnt == (9 + this.check)) begin
                 uart_data_start = 0;
 

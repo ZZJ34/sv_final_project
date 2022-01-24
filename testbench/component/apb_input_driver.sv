@@ -33,14 +33,10 @@ endfunction
 
 // main_phase
 task apb_input_drv::main_phase (uvm_phase phase);
-
     // wait reset end
     wait(this.vif.rst_ == 1);
-
     idle_state();
-
-    
-        // drive
+    // drive
     while (1) begin
         seq_item_port.try_next_item(req);
         if(req == null)
@@ -49,7 +45,6 @@ task apb_input_drv::main_phase (uvm_phase phase);
             idle_state();
             response(req);
             seq_item_port.item_done();
-
         end
         else begin
             setup_state(req);
@@ -58,9 +53,6 @@ task apb_input_drv::main_phase (uvm_phase phase);
             seq_item_port.item_done();
         end
     end
-
-    
-
 endtask 
 
 // idle_state

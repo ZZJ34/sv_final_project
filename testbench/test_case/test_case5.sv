@@ -25,7 +25,98 @@ task case5_sequence::body();
         this.starting_phase.raise_objection(this);
     end
 
-    for(int i = 0; i < 710; i++) begin
+    // 设置波特率
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h08; req.pdata == 13;});
+    get_response(rsp);
+    // 设置奇偶校验位、停止位
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h0c; req.pdata[14] == 0;})
+    get_response(rsp);
+    // 设置 TX FIFO 触发深度
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h14; })
+    get_response(rsp);
+    // 帧间隔
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h18; })
+    get_response(rsp);
+
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h00;})
+    get_response(rsp);
+    `uvm_do_with(req, {req.ttype == transaction::IDLE;})
+    get_response(rsp);
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h00;})
+    get_response(rsp);
+
+    #10000000;
+
+    // 设置波特率
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h08; req.pdata == 41;});
+    get_response(rsp);
+    // 设置奇偶校验位、停止位
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h0c; req.pdata[14] == 0;})
+    get_response(rsp);
+    // 设置 TX FIFO 触发深度
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h14; })
+    get_response(rsp);
+    // 帧间隔
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h18; })
+    get_response(rsp);
+
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h00;})
+    get_response(rsp);
+    `uvm_do_with(req, {req.ttype == transaction::IDLE;})
+    get_response(rsp);
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h00;})
+    get_response(rsp);
+
+    #10000000;
+
+    // 设置波特率
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h08; req.pdata == 84;});
+    get_response(rsp);
+    // 设置奇偶校验位、停止位
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h0c; req.pdata[14] == 0;})
+    get_response(rsp);
+    // 设置 TX FIFO 触发深度
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h14; })
+    get_response(rsp);
+    // 帧间隔
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h18; })
+    get_response(rsp);
+
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h00;})
+    get_response(rsp);
+    `uvm_do_with(req, {req.ttype == transaction::IDLE;})
+    get_response(rsp);
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h00;})
+    get_response(rsp);
+
+    #10000000;
+
+    // 设置波特率
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h08; req.pdata == 168;});
+    get_response(rsp);
+    // 设置奇偶校验位、停止位
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h0c; req.pdata[14] == 0;})
+    get_response(rsp);
+    // 设置 TX FIFO 触发深度
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h14; })
+    get_response(rsp);
+    // 帧间隔
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h18; })
+    get_response(rsp);
+
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h00;})
+    get_response(rsp);
+    `uvm_do_with(req, {req.ttype == transaction::IDLE;})
+    get_response(rsp);
+    `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h00;})
+    get_response(rsp);
+
+    #10000000;
+
+    
+
+
+    for(int i = 0; i < 30; i++) begin
         // 设置波特率
         `uvm_do_with(req, {req.ttype == transaction::WRITE; req.paddr == 32'h08;})
         get_response(rsp);
@@ -94,7 +185,7 @@ task case5_sequence::body();
         end
     end
 
-    #80000000;
+    #40000000;
 
 
 

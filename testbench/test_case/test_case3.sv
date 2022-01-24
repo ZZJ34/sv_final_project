@@ -57,7 +57,7 @@ task case3_sequence::body();
     `uvm_do_with(req, {req.ttype == transaction::IDLE;})
     get_response(rsp);
 
-    #20000000;
+    #15000000;
 
 
     if(this.starting_phase != null) begin

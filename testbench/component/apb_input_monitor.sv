@@ -48,34 +48,23 @@ task apb_input_mon::main_phase (uvm_phase phase);
     wait(this.vif.rst_ == 1);
     // collect a transaction
     while (1) begin
-
         @(posedge this.vif.clk)
-
         if (this.vif.psel_i == 1 && this.vif.penable_i == 1) begin
-
             `uvm_info("apb_input_mon", "\nget one transaction!", UVM_LOW);
-            
             tr = new("tr");
-
             tr.ttype = this.vif.pwrite_i ? transaction::WRITE : transaction::READ;
             tr.paddr = this.vif.paddr_i;
             tr.pdata = this.vif.pwrite_i ? this.vif.pwdata_i : this.vif.prdata_o;
-
             // display transaction info
             tr.print_apb_info();
-
             // coverage
             cvg.sample(tr);
-
             // to model
             apb_mon_i2mdl_port.write(tr);
-
-
             // to uart_output_mon
             // set baud & set check
             if(tr.ttype == 1 && (tr.paddr == 32'h08 || tr.paddr == 32'h0c)) uart_set_port.write(tr);
         end
-
         if (this.vif.psel_i == 0 && this.vif.penable_i == 0) begin
             tr = new("tr");
             tr.ttype = transaction::IDLE;

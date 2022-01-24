@@ -63,7 +63,7 @@ function void top_env::connect_phase (uvm_phase phase);
     mdl.uart_tr_port.connect(mdl2scb_uart_fifo.analysis_export);
     scb.uart_tr_get_port.connect(mdl2scb_uart_fifo.blocking_get_export);
     // output_agt -> scoreboard
-    agt_o.agt_o2mdl_port.connect(agt_o2scb_fifo.analysis_export);
+    agt_o.agt_o2scb_port.connect(agt_o2scb_fifo.analysis_export);
     scb.agt_o2scb_get_port.connect(agt_o2scb_fifo.blocking_get_export);
 endfunction
 `endif
