@@ -82,9 +82,75 @@ APB 读写时序如下图所示：
 
 文件结构以及说明（`./testbench` 中的代码）：
 
-
+```
+./testbench
+|
+├── _component               // UVM 组件
+|   |                            
+|   ├── apb_input_driver.sv      // 输入 driver                           
+|   ├── apb_input_monitor.sv     // 输入 monitor      
+|   ├── input_agent.sv           // 输入 agent 
+|   |
+|   ├── uart_output_monitor.sv   // 输出 monitor
+|   ├── output_agent.sv          // 输出 agent
+|   |
+|   ├── sequencer.sv             // 输入激励
+|   |
+|   ├── scoreboard.sv            // 数据比对
+|   |
+|   ├── model.sv                 // DUT 行为模型
+|   |
+|   └── environment.sv           // UVM 环境
+|
+├── _interface
+|   |      
+|   └── apb_uart_interface.sv    // DUT 驱动接口、assertion
+|
+├── _object               // object 对象（传输数据对象）
+|   |
+|   ├── _sequence
+|   |   |
+|   |   └── base_sequence.sv
+|   |
+|   └── transaction.sv
+|
+├── _test_case            // 测试案例
+|   |                           
+|   ├── base_test.sv
+|   |       
+|   ├── test_case0.sv           // 测试案例 0     
+|   ├── test_case1.sv           // 测试案例 1 
+|   ├── test_case2.sv           // 测试案例 2 
+|   ├── test_case3.sv           // 测试案例 3 
+|   ├── test_case4.sv           // 测试案例 4 
+|   └── test_case5.sv           // 测试案例 5 
+|
+├── _reg_model            // 寄存器模型 
+|   |  
+|   ├── reg_model.sv
+|   |                            
+|   ├── reg_baud.sv
+|   ├── reg_conf.sv
+|   ├── reg_delay.sv
+|   ├── reg_rx.sv
+|   ├── reg_rxfifo_stat.sv
+|   ├── reg_rxtrig.sv
+|   ├── reg_tx.sv
+|   ├── reg_txfifo_stat.sv
+|   ├── reg_txtrig.sv
+|   └── reg_status.sv 
+|
+├── coverage.sv         // 覆盖率分析
+|
+├── pkg.svh             
+|      
+└── testbench_top.sv    // testbench 顶层
+```
 ---
-
-
 ## 运行方式
+
+Windows，QuestaSim
+
+可以直接在 QuestaSim 中执行 `./sim` 中的脚本，进行编译、仿真
+
 ---
